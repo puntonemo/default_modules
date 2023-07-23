@@ -1,0 +1,9 @@
+{
+    "langPath" : "./lang",
+    "langFile" : "default.json",
+    "templatesPath" : "./templates",
+    "templateExt" : ".html",
+    "STATIC_ROUTE": "/static",
+    "STATIC_PATH": "./static",
+    "MODULES": []
+}

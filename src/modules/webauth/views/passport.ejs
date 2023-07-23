@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    </head>
+    <body>
+        <% if (locals.state) { %>
+        <script>
+            const goUrl = new URLSearchParams(window.location.search).get('go') || '/';
+            window.location.href=goUrl;
+        </script>
+        <%} else {%>
+        <script>
+            window.location.href="/webauth/signin?status=passportError";
+        </script>
+        <%}%>
+    </body>
+</html>

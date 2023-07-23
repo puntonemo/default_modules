@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebAuth Module - Sign Up</title>
+  <link href="/static/defaults/css/layout.css" rel="stylesheet">
+  <link href="/static/defaults/css/geeks.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.0.96/css/materialdesignicons.min.css"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml"  href="data:image/svg+xml, %3Csvg width='200px' height='200px' viewBox='0 0 24.00 24.00' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='%23d7cff2' stroke-width='0.40800000000000003'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round' stroke='%23CCCCCC' stroke-width='0.048'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cpath d='M20.73 16.52C20.73 16.52 20.73 16.45 20.73 16.41V7.58999C20.7297 7.47524 20.7022 7.36218 20.65 7.25999C20.5764 7.10119 20.4488 6.97364 20.29 6.89999L12.29 3.31999C12.1926 3.2758 12.0869 3.25293 11.98 3.25293C11.8731 3.25293 11.7674 3.2758 11.67 3.31999L3.67001 6.89999C3.54135 6.96474 3.43255 7.06303 3.35511 7.18448C3.27766 7.30592 3.23444 7.44603 3.23001 7.58999V16.41C3.23749 16.5532 3.28195 16.6921 3.35906 16.813C3.43617 16.9339 3.54331 17.0328 3.67001 17.1L11.67 20.68C11.7668 20.7262 11.8727 20.7501 11.98 20.7501C12.0873 20.7501 12.1932 20.7262 12.29 20.68L20.29 17.1C20.4055 17.0471 20.5061 16.9665 20.5829 16.8653C20.6597 16.7641 20.7102 16.6455 20.73 16.52ZM4.73001 8.73999L11.23 11.66V18.84L4.73001 15.93V8.73999ZM12.73 11.66L19.23 8.73999V15.93L12.73 18.84V11.66ZM12 4.81999L18.17 7.58999L12 10.35L5.83001 7.58999L12 4.81999Z' fill='%23754ffe'%3E%3C/path%3E%3C/g%3E%3C/svg%3E" />
+</head>
+
+<body>
+  <main>
+    <section class="container d-flex flex-column">
+      <div class="row align-items-center justify-content-center g-0 min-vh-100">
+
+        <div class="col-lg-6 col-md-8 py-8 py-xl-0">
+          <!-- Card -->
+          <div class="card shadow ">
+            <!-- Card body -->
+            <div class="card-body p-6">
+              <div class="mb-4">
+                <h1 class="mb-1 fw-bold">Sign up</h1>
+                <span>Already have an account? <a href="signin" class="ms-1">Sign in</a></span>
+              </div>
+              <div>
+                <!-- Button -->
+                <div class="collapse show" id="collapse3">
+                  <div class="d-grid mb-1">
+                    <a class="btn btn-outline-secondary btn-google" href= "/api/passport/authUrl/google?state=register&redirect_uri=/webauth/passport%3Fgo=/">
+                      <i class="mdi mdi-google fs-3 me-3"></i> Sign in with Google
+                    </a>
+                  </div>
+                  <div class="d-grid mb-1">
+                    <a class="btn btn-outline-secondary btn-microsoft" href="/api/passport/authUrl/live?state=register&redirect_uri=/webauth/passport%3Fgo=/">
+                      <i class="mdi mdi-microsoft fs-3 me-3"></i> Sign in with Microsoft
+                    </a>
+                  </div>
+                  <div class="d-grid mb-1">
+                    <button type="submit" class="btn btn-outline-secondary" id="btnSignUpCertificate">
+                      <i class="mdi mdi-seal fs-3 me-3"></i> Sign up with Certificate</button>
+                  </div>
+                  <div class="d-grid mb-1 d-none">
+                    <button type="submit" class="btn btn-outline-secondary">
+                      <i class="mdi mdi-key-variant fs-3 me-3"></i> Sign up with 2FA key
+                    </button>
+                  </div>
+                </div>
+                <div class="collapse" id="collapse4">
+                  <div class="row text-center">
+                    <!--Google-->
+                    <div class="col-4 p-1">
+                      <a href="#" class="w-100 btn btn-outline-secondary btn-google" href= "/api/passport/authUrl/google?state=register&redirect_uri=/webauth/passport%3Fgo=/">
+                        <i class="mdi mdi-google fs-4"></i>
+                      </a>
+                    </div>
+                    <!--Microsoft-->
+                    <div class="col-4 p-1">
+                      <a href="#" class="w-100 btn btn-outline-secondary btn-microsoft" href= "/api/passport/authUrl/live?state=register&redirect_uri=/webauth/passport%3Fgo=/">
+                        <i class="mdi mdi-microsoft fs-4"></i>
+                      </a>
+                    </div>
+                    <!--Certificate-->
+                    <div class="col-4 p-1">
+                      <a href="#" class="w-100 btn btn-outline-secondary" id="btnSignUpCertificate2">
+                        <i class="mdi mdi-seal fs-4"></i>
+                      </a>
+                    </div>
+                    <!--2FA Key-->
+                    <div class="col-3 p-1 d-none">
+                      <a href="#" class="w-100 btn btn-outline-secondary">
+                        <i class="mdi mdi-key-variant fs-4"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4">
+                <div class="collapse show" id="collapse2">
+                  <div class="d-grid mb-1">
+                    <button type="submit" class="btn btn-outline-secondary" id="signupEmail">
+                      <i class="mdi mdi-email fs-3 me-3"></i> Sign up with email</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Form -->
+              <div class="collapse" id="collapse1">
+                <form id="signUpForm">
+                  <div class="row">
+                    <!-- First Name -->
+                    <div class="mb-3 col-md-6">
+                      <label for="firstname" class="form-label">First name</label>
+                      <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Your first name here" required="">
+                    </div>
+                    <!-- Last Name -->
+                    <div class="mb-3 col-md-6">
+                      <label for="lastname" class="form-label">Last name</label>
+                      <input type="text" id="lastname" class="form-control" name="lastname" placeholder="Your last name here" required="">
+                    </div>
+                  </div>
+                  <!-- Username -->
+                  <div class="mb-3">
+                    <label for="username" class="form-label">email address</label>
+                    <input type="email" id="username" class="form-control" autocomplete="username webauthn" name="username" placeholder="Email address here" required="">
+                  </div>
+                  <!-- Password -->
+                  <div class="collapse show" id="collapsePassword">
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" id="password" class="form-control" name="password" placeholder="**************" required="">
+                    </div>
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Repeat Password</label>
+                      <input type="password" id="password2" class="form-control" name="password2" placeholder="**************" required="">
+                    </div>
+                    <!-- Checkbox -->
+                    <div class="d-lg-flex justify-content-between align-items-center mb-4 d-none">
+                      <div class="form-check d-none" id="registerDeviceContainer">
+                        <input type="checkbox" class="form-check-input " id="registerDevice">
+                        <label class="form-check-label " for="registerDevice">Remember this device</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+
+                  <div class="collapse" id="collapseUserAlreadyExisting">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
+                      </svg>
+                      <div>
+                        <p class="ms-2 mb-0">User already existing. Please, <a href="signin" class="ms-1">Sign in</a></p>                      
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Button -->
+                  <div class="d-grid">
+                    <button type="submit" class="btn btn-primary" id="btnSignUp">Sign Up</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="/static/defaults/js/app.api.js"></script>
+  <script src="/static/defaults/js/theme.js"></script>
+  <script src="/static/webauth/js/auth.js"></script>
+  <script src="/static/webauth/js/signup.js"></script>
+</body>
+
+</html>

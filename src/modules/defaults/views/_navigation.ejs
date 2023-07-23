@@ -1,0 +1,229 @@
+<!-- Navbar -->
+<!-- navbar login -->
+<nav class="navbar navbar-expand-lg navbar-transparent shadow-none">
+    <div class="container px-0">
+      <a class="navbar-brand" href="../../index.html"
+        ><img src="../../assets/images/brand/logo/logo.svg" alt=""
+      /></a>
+      <div class="d-flex align-items-center order-lg-3">
+        <div class="d-flex align-items-center">
+          <a href="#" id="theme-toggle" class="btn btn-light text-muted btn-icon rounded-circle me-2">
+            <i class="d-none-theme-light nav-icon fs-3 fe fe-moon"></i>
+            <i class="d-none-theme-dark nav-icon fs-3 fe fe-sun"></i>
+          </a>
+          <% if (locals.session.profile) { %>
+          <a href="/api/webauth/logout?redirect_uri=/" class="btn btn-primary">Logout</a>
+          <% } else { %>
+          <a href="/webauth/signin" class="btn btn-primary">Sign in</a>
+          <a href="/webauth/signup" class="btn ms-2 btn-outline-primary">Sign up</a>
+          <% } %>
+        </div>
+        <div>
+          <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar top-bar mt-0"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+        </div>
+      </div>
+      <!-- Button -->
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="navbar-default">
+        <ul class="navbar-nav @@navbarAuto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              Home
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarLanding" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Landings
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarLanding">
+              <li>
+                <h4 class="dropdown-header">Landings</h4>
+              </li>
+              <li>
+                <a href="#" class="dropdown-item d-flex justify-content-between">
+                  Education <span class="badge bg-primary ms-1">New</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="dropdown-item d-flex justify-content-between">
+                  Home Academy
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarPages" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Pages
+            </a>
+            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarPages">
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  With levels
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      Sub Menu 1
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      Sub Menu 1
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <hr class="mx-3" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"> About </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarAccount" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Accounts
+            </a>
+            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarAccount">
+              <li>
+                <h4 class="dropdown-header">Accounts</h4>
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Menu Title
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="text-wrap">
+                    <h5 class="dropdown-header text-dark">Instructor</h5>
+                    <p class="dropdown-text mb-0">
+                      Menu description
+                    </p>
+                  </li>
+                  <li>
+                    <hr class="mx-3" />
+                  </li>
+                  <li class="dropdown-submenu dropend">
+                    <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                      With badge
+                      <span class="badge bg-primary ms-1"> New </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          Menu Item
+                        </a>
+                      </li>
+                      <li>
+                          <a class="dropdown-item" href="#">
+                              Menu Item
+                          </a>
+                      </li>
+                      <li>
+                          <a class="dropdown-item" href="#">
+                            Menu Item
+                          </a>
+                        </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Admin
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="text-wrap">
+                    <h5 class="dropdown-header text-dark">Master Admin</h5>
+                    <p class="dropdown-text mb-0">
+                      Lorem ipsum dolor amet
+                    </p>
+                  </li>
+                  <li>
+                    <hr class="mx-3" />
+                  </li>
+                  <li class="px-3 d-grid">
+                    <a href="#" class="btn btn-sm btn-primary">Go to Dashboard</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <hr class="mx-3" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  Sign In
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  Sign Up
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fe fe-more-horizontal"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-md" aria-labelledby="navbarDropdown">
+              <div class="list-group">
+                <a class="list-group-item list-group-item-action border-0" href="#">
+                  <div class="d-flex align-items-center">
+                    <i class="fe fe-file-text fs-3 text-primary"></i>
+                    <div class="ms-3">
+                      <h5 class="mb-0">Documentations</h5>
+                      <p class="mb-0 fs-6">Browse the all documentation</p>
+                    </div>
+                  </div>
+                </a>
+                <a class="list-group-item list-group-item-action border-0" href="#">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-files fs-3 text-primary"></i>
+                    <div class="ms-3">
+                      <h5 class="mb-0">Snippet</h5>
+                      <p class="mb-0 fs-6">Bunch of Snippet</p>
+                    </div>
+                  </div>
+                </a>
+                <a class="list-group-item list-group-item-action border-0" href="#">
+                  <div class="d-flex align-items-center">
+                    <i class="fe fe-layers fs-3 text-primary"></i>
+                    <div class="ms-3">
+                      <h5 class="mb-0">
+                        Changelog
+                        <span class="text-primary ms-1" id="changelog">v3.1.0</span>
+                      </h5>
+                      <p class="mb-0 fs-6">See what's new</p>
+                    </div>
+                  </div>
+                </a>
+                <a class="list-group-item list-group-item-action border-0" href="#" target="_blank">
+                  <div class="d-flex align-items-center">
+                    <i class="fe fe-toggle-right fs-3 text-primary"></i>
+                    <div class="ms-3">
+                      <h5 class="mb-0">RTL demo</h5>
+                      <p class="mb-0 fs-6">RTL Pages</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  

@@ -1,0 +1,30 @@
+{
+    "ENCRYPTION_KEY"            : "FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=",
+    "REDIRECT_URI_BASE"         : "https://local.puntonemo.com:4443",
+    "REDIRECT_URI_PATH"         : "/api/passport/response",
+    "GOOGLE":{      
+        "CLIENT_ID"             : "220119208739-8stfftjlnrk3j6o7g1p26svaccr3hv6j.apps.googleusercontent.com",
+        "CLIENT_SECRET"         : "yoJo4VWNXURqad1zR6OxWCiE",
+        "RESPONSE_TYPE"         : "code",
+        "ACCESS_TYPE"           : "offline",
+        "PROMPT"                : "consent",
+        "DEFAULT_SCOPES"        : [ "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile" ]
+    },      
+    "TWITTER":{     
+        "CLIENT_ID"             : "R3JRS29JMUhCbWdCaUJGdkNoUnI6MTpjaQ",
+        "RESPONSE_TYPE"         : "code",
+        "DEFAULT_SCOPES"        : [ "offline.access", "users.read", "tweet.read" ],
+        "USER.FIELDS"           : [ "id", "name", "profile_image_url", "username" ],
+        "CODE_CHALLENGE"        : "nemo",
+        "CODE_CHALLENGE_METHOD" : "plain"
+    },
+    "LIVE":{
+        "CLIENT_ID"             : "a754ab98-f017-4dee-908d-279567a114c2",
+        "CLIENT_SECRET"         : "DHa8Q~zJGmjdCfIqNhHxBAbchJfeNlwECNQRccwQ",
+        "RESPONSE_TYPE"         : "code",
+        "ACCESS_TYPE"           : "offline",
+        "PROMPT"                : "consent",
+        "GRANT_TYPE"            : "authorization_code",
+        "DEFAULT_SCOPES"        : [ "openid", "profile", "email", "User.Read" ]
+    }
+}

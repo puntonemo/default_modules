@@ -1,0 +1,21 @@
+{
+  "name": "defaults",
+  "version": "1.0.0",
+  "description": "defaults module",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.2"
+  }
+}

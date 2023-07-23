@@ -1,0 +1,29 @@
+<%- include('_header') -%>
+<body class="bg-white overflow-hidden">
+    <%- include('_navigation') -%>
+    <main><!-- Page Content -->
+      <section class="pt-lg-14 pt-md-10 pt-7 pb-lg-5 pb-md-5 pb-4 position-relative">
+        <div class="container">
+          <a href="/" class="btn btn-primary">Back to Home</a>
+          <p class="lead">Session</p>
+          <p><%= session.id %></p>
+          <p class="lead">User Agent</p>
+          <p><%= headers["user-agent"] %></p>
+          <hr>
+          <% if (locals.session.profile) { %>
+            <p class="lead">
+              User Profile
+            </p>
+            <p>username: <strong> <%= session.profile.username %></strong></p>
+            <p>firstName: <strong><%= session.profile.firstName %></strong></p>
+            <p>lastName: <strong> <%= session.profile.lastName %></strong></p>
+            <hr>
+          <% } %>
+        </div>
+      </section>
+    </main>
+    <%- include('_footer') -%>
+    <!-- Scripts -->
+    <%- include('_scripts') -%>
+</body>
+</html>

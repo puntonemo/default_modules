@@ -1,0 +1,295 @@
+
+/** NAV TABS */
+
+.nav-tabs {
+    display: inline-flex;
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: inherit;
+    -ms-overflow-style: none; /*// IE 10+*/
+    overflow: -moz-scrollbars-none;/*// Firefox*/
+}
+  .nav-tabs>li.active>a,
+  .nav-tabs>li.active>a:focus,
+  .nav-tabs>li.active>a:hover {
+    border-width: 0;
+  }
+  .nav-tabs>li>a {
+    border: none;
+
+  }
+  .nav-tabs>li>a.active,
+  .nav-tabs>li>a:hover {
+    border: none;
+  }
+  .nav-tabs>li>a:hover::after {
+      
+    content: "";
+    height: 2px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 1px;
+    transition: all 250ms ease 0s;
+    transform: scale(0);
+    
+  }
+  .nav-tabs>li>a.active::after {
+    content: "";
+    height: 4px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 1px;
+    transition: all 250ms ease 0s;
+    transform: scale(1);
+  }
+  .nav-tabs>li{
+      width:100%;
+      text-align: center;
+      white-space: nowrap;
+  }
+  .nav-tabs>li.active>a::after,
+  .nav-tabs>li:hover>a::after {
+    transform: scale(1);
+  }
+  .tab-pane {
+    padding: 15px 0;
+  }
+  .tab-content {
+    padding: 20px
+  }
+  
+  .nav-tabs::-webkit-scrollbar {
+    display: none; /*Safari and Chrome*/
+  }
+  
+  .nav>li>a {
+      position: relative;
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+  }
+
+.lsidebar .active{
+    z-index:unset;
+}
+@media (max-width: 991px) {
+    /* HELPERS */
+    .lg-only{
+        display:none;
+    }
+    /* GLOBAL NAVBAR */
+    div.gnavbar, nav.gnavbar{
+        display: flex;
+        overflow-y: overlay;
+        position: fixed;
+        bottom: -65px;
+        left: 0px;
+        height: 65px;
+        width: 100%;
+        -webkit-transition: bottom .3s ease,bottom .3s ease;
+        transition: bottom .3s ease,bottom .3s ease;
+        z-index:1550;
+        
+    }
+    body.gnavbar div.gnavbar, body.gnavbar nav.gnavbar, body.gnavbar-xs-only div.gnavbar, body.gnavbar-xs-only nav.gnavbar{
+        bottom: 0px;
+    }
+    
+    /* LEFT SIDEBAR */
+    div.lsidebar, nav.lsidebar{
+        position: fixed;
+        bottom: -100%;
+        left: 0px;
+        width: 100%;
+        height: 100vh;
+        -webkit-transition: bottom .3s ease,bottom .3s ease;
+        transition: bottom .3s ease,bottom .3s ease;
+        z-index:1520;
+    }
+    body.gnavbar, body.gnavbar-xs-only{
+        padding-bottom:65px;
+    }
+    div.lsidebar.open, nav.lsidebar.open {
+        bottom: 0px;
+    }
+    /* LEFT SIDEBAR */
+    div.rsidebar, nav.rsidebar{
+        position: fixed;
+        bottom: -100%;
+        left: 0px;
+        width: 100%;
+        height: 100vh;
+        -webkit-transition: bottom .3s ease,bottom .3s ease;
+        transition: bottom .3s ease,bottom .3s ease;
+        z-index:1500;
+        
+    }
+    body.gnavbar div.rsidebar, nav.rsidebar{
+        padding-bottom:65px;
+    }
+    div.rsidebar.open, nav.rsidebar.open {
+        bottom: 0px;
+    }
+    /* SCROLL-TO-TOP */
+    .scroll-to-top{
+        position: fixed;
+        display:inline;
+        right: 25px;
+        bottom: 25px;
+        opacity: 0;
+        visibility:hidden;
+        width: 2.75rem;
+        height: 2.75rem;
+        text-align: center;
+        line-height: 46px;
+        -webkit-transition: visibility 1s, opacity 0.5s linear;
+        transition: visibility 1s, opacity 0.5s linear;
+        z-index:1499;
+        cursor:pointer;
+    }
+    .scroll-to-top.show{
+        opacity: 1;
+        visibility:visible;
+        -webkit-transition: visibility 1s, opacity 0.5s linear;
+        transition: visibility 1s, opacity 0.5s linear;
+    }
+    body.gnavbar .scroll-to-top, body.gnavbar-xs-only .scroll-to-top{
+        bottom: 90px;
+    }
+}
+
+@media (min-width: 992px) {
+    /* HELPERS */
+    .xs-only{
+        display:none;
+    }
+    /* GLOBAL NAVBAR */
+    div.gnavbar, nav.gnavbar{
+        position: fixed;
+        top: 0px;
+        left: -75px;
+        width: 75px;
+        height: 100vh;
+        -webkit-transition: left .3s ease,left .3s ease;
+        transition: left .3s ease,left .3s ease;
+        z-index:1550;
+    }
+    body.gnavbar div.gnavbar, body.gnavbar nav.gnavbar, body.gnavbar-lg-only div.gnavbar, body.gnavbar-lg-only nav.gnavbar{       
+        left: 0px;
+    }
+    body.gnavbar, body.gnavbar-lg-only{
+        padding-left: 75px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    body{
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    body.gnavbar .fixed-top, body.gnavbar-lg-only .fixed-top{
+        padding-left: 75px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    .fixed-top{
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    /* LEFT SIDEBAR */
+    div.lsidebar, nav.lsidebar{
+        position: fixed;
+        top: 0px;
+        left: -475px;
+        width: 400px;
+        height: 100vh;
+        -webkit-transition: left .3s ease;
+        transition: left .3s ease;
+        z-index:1040;
+    }
+    body.lsidebar div.lsidebar, body.lsidebar nav.lsidebar{
+        left: 0px;
+    }
+    body.lsidebar-fixed div.lsidebar, body.lsidebar-fixed nav.lsidebar{
+        left: 0px;
+    }
+    body.gnavbar.lsidebar div.lsidebar, body.gnavbar.lsidebar nav.lsidebar, body.gnavbar-lg-only.lsidebar div.lsidebar, body.gnavbar-lg-only.lsidebar nav.lsidebar{
+        left: 75px;
+    }
+    body.gnavbar.lsidebar-fixed div.lsidebar, body.gnavbar.lsidebar-fixed nav.lsidebar, body.gnavbar-lg-only.lsidebar-fixed div.lsidebar, body.gnavbar-lg-only.lsidebar-fixed nav.lsidebar{
+        left: 75px;
+    }
+    body.gnavbar.lsidebar-fixed .fixed-top, body.gnavbar-lg-only.lsidebar-fixed .fixed-top{
+        padding-left: 475px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    body.lsidebar-fixed .fixed-top{
+        padding-left: 400px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    body.lsidebar-fixed{
+        margin-left: 400px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    /* RIGHT SIDEBAR */
+    div.rsidebar, nav.rsidebar{
+        position: fixed;
+        top: 0px;
+        right: -475px;
+        width: 400px;
+        height: 100vh;
+        -webkit-transition: right .3s ease;
+        transition: right .3s ease;
+        z-index:1500;
+    }
+    body.rsidebar div.rsidebar, body.rsidebar nav.rsidebar{
+        right: 0px;
+    }
+    body.rsidebar-fixed div.rsidebar, body.rsidebar-fixed nav.rsidebar{
+        right: 0px;
+    }
+    body.rsidebar-fixed{
+        margin-right: 400px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    body.rsidebar-fixed .fixed-top{
+        padding-right: 400px;
+        -webkit-transition: padding .3s ease,margin .3s ease;
+        transition: padding .3s ease,margin .3s ease;
+    }
+    /* SCROLL-TO-TOP */
+    .scroll-to-top{
+        position: fixed;
+        display:inline;
+        right: 25px;
+        bottom: 25px;
+        opacity: 0;
+        visibility:hidden;
+        width: 2.75rem;
+        height: 2.75rem;
+        text-align: center;
+        line-height: 46px;
+        -webkit-transition: visibility 1s, opacity 0.5s linear;
+        transition: visibility 1s, opacity 0.5s linear;
+        z-index:1560;
+        cursor:pointer;
+    }
+    .scroll-to-top.show{
+        opacity: 1;
+        visibility:visible;
+        -webkit-transition: visibility 1s, opacity 0.5s linear;
+        transition: visibility 1s, opacity 0.5s linear;
+    }
+    body.rsidebar .scroll-to-top{
+        right: 425px;
+    }
+    body.rsidebar-fixed .scroll-to-top{
+        right: 425px;
+    }
+
+}
