@@ -135,10 +135,19 @@ export const Services:nemo.Service[] = [
 
 
 export const init = () => {
-    console.log('Defaults Module v.1.8');
+    console.log('Defaults Module v.1.9');
 
-    nemo.events.on('webauth:auth', (sessionId:string, userString:string)=>{
+    /* WEBAUTH COMPATIBILITY 1.8 */
+    nemo.events.on('webauth:login', (sessionId:string, userString:string)=>{
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
         console.log(`WEBAUTH (Remote) : User ${user.username} authenticated on session ${sessionId}`);
+    })
+    nemo.events.on('webauth:register', (sessionId:string, userString:string)=>{
+        const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
+        console.log(`WEBAUTH (Remote) : User ${user.username} registered on session ${sessionId}`);
+    })
+    nemo.events.on('webauth:error', (sessionId:string, userString:string, error:string) => {
+        const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
+        console.log(`WEBAUTH (Remote) : Error authenticating user ${user.username} on session ${sessionId} - ${error}`);
     })
 }
