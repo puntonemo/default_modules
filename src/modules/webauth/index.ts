@@ -30,6 +30,7 @@ export { nemo };
 
 export const _profile = 'profile';
 export const _login = 'login';
+export const _register = 'register';
 export const _deviceId = 'deviceId'
 export const _passportError = 'passportError';
 export const _webauthFlowData = 'webauthFlowData';
@@ -37,7 +38,7 @@ export const _webauthFlowData = 'webauthFlowData';
 export { User, tools };
 
 export const init = () => {
-    console.log('WEBAUTH Module v.1.7');
+    console.log('WEBAUTH Module v.1.9');
 
     /**
      * COMPATIBILITY WITH PASSPORT
@@ -54,19 +55,25 @@ export const init = () => {
                             if(providerResponse.state.data == _login){
                                 if(user.getProviderId(providerResponse.profile.provider) == providerResponse.profile.id){
                                     session.setValue(_profile, user.toPublicObject());
-                                    events.emit('webauth:auth', sessionId, user);
-                                    console.log(`WEBAUTH : Authenticated by passport on session ${sessionId}`);
+                                    events.emit('webauth:login', sessionId, user);
+                                    console.log(`WEBAUTH : Authenticated (login) by passport on session ${sessionId}`);
                                 }else{
                                     console.log('WEBAUTH : ACCOUNT NOT REGISTERED (1)');
                                     session.delValue(_profile);
-                                    events.emit('webauth:error', sessionId, 'account-not-registered');
+                                    events.emit('webauth:error', sessionId, user.toPublicObject(), 'account-not-registered');
                                     session.setValue(_passportError, 'account-not-registered');
                                 }
+                            }
+                            if(providerResponse.state.data == _register){
+                                user.setProviderId(providerResponse.profile.provider, providerResponse.profile.id);
+                                session.setValue(_profile, user.toPublicObject());
+                                events.emit('webauth:register', sessionId, user);
+                                console.log(`WEBAUTH : Authenticated (register) by passport on session ${sessionId}`);
                             }
                         }else{
                             user = new User(0, providerResponse.profile.email, providerResponse.profile.firstName, providerResponse.profile.lastName, undefined, providerResponse.profile.picture, providerResponse.profile.provider, providerResponse.profile.id);
                             session.setValue(_profile,  user.toPublicObject());
-                            events.emit('webauth:auth', sessionId, user);
+                            events.emit('webauth:register', sessionId, user);
                         }
                     })
                 }

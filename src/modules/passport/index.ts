@@ -19,7 +19,7 @@ export { nemo };
 export const _deviceId = 'deviceId'
 
 export const init = () => {
-    console.log('PASSPORT Module v.1.6');
+    console.log('PASSPORT Module v.1.9');
 }
 
 
