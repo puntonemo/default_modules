@@ -13,7 +13,7 @@ const events = nemo.events;
 const validateClientData = (credential:GenericObject, webauthFlowData:GenericObject, remoteAddress:string|string[]|undefined) => {
     let validated = true;
     let clientDataObj;
-    if(credential.clientData && webauthFlowData.challenge && webauthFlowData.origin){
+    if(credential.clientData && webauthFlowData?.challenge && webauthFlowData?.origin){
         const decodedClientData = base64url.default.decode(credential.clientData);
         clientDataObj = JSON.parse(decodedClientData);
         if(clientDataObj.challenge != webauthFlowData.challenge) validated = false;
@@ -52,7 +52,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                             //user = User.get(credentialUser);
                             username = credentialUser;
                         }else{
-                            events.emit('webauth:error', request.session.id, 'setCredential:credential-not-found');
+                            events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-not-found');
                             reject(responseError(401, 'Credential not found'));
                         }
                     })
@@ -81,7 +81,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 //credentialFound = user.credentials.find((cred:string)=>cred == credentialId);
                                 credentialFound = user.findCredential(credentialId);
                                 if(credentialFound){
-                                    events.emit('webauth:error', request.session.id, 'setCredential:credential-already-exists');
+                                    events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-already-exists');
                                     reject(responseError(400, 'Credential already registered'));
                                 }
                             }
@@ -133,17 +133,17 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                             }
                             break;
                         default:
-                            events.emit('webauth:error', request.session.id, 'setCredential:invalid-clientDataType');
+                            events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientDataType');
                             reject(responseError(400));
                     }
                 })
             }else{
-                events.emit('webauth:error', request.session.id, 'setCredential:invalid-clientData');
+                events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientData');
                 reject(responseError(403, 'Invalid ClientData'));
             }
         })
     }else{
-        events.emit('webauth:error', request.session.id, 'setCredential:clientData-not-validated');
+        events.emit('webauth:error', request.session.id, undefined, 'setCredential:clientData-not-validated');
         reject(responseError(400));
     }
 

@@ -38,7 +38,7 @@ export const _webauthFlowData = 'webauthFlowData';
 export { User, tools };
 
 export const init = () => {
-    console.log('WEBAUTH Module v.1.9');
+    console.log('WEBAUTH Module v.1.9.1');
 
     /**
      * COMPATIBILITY WITH PASSPORT
