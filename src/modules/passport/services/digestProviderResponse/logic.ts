@@ -1,12 +1,5 @@
-import { nemo } from "../..";
+import { GenericObject, fetch } from '../..';
 import { encrypt, decrypt } from "../../tools";
-
-/*****************************************************/
-/* ShortHands                                        */
-type GenericObject = nemo.GenericObject;
-const fetch = nemo.fetch;
-/*                                                   */
-/*****************************************************/
 
 type StandarizedUserProfile = {
     id:string,

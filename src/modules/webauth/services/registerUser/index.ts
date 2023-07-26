@@ -1,16 +1,5 @@
-import { nemo } from "../..";
+import { core, ClientRequest, GenericObject, responseError } from '../..';
 import { User, tools, _deviceId, _login, _passportError, _profile } from "../..";
-
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const responseError = nemo.responseError;
-const events = nemo.events;
-/*                                                   */
-/*****************************************************/
-
-
 
 const registerUser = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName, password} = request.params;
@@ -37,9 +26,9 @@ const registerUser = (request:ClientRequest):Promise<GenericObject> => new Promi
                 tools.hashPassword(password, tools.HASH_SALT)
             );
             //fileDB.setValue('users', username, newUser);
-            events.emit('webauth:new-user', request.session.id, username);
+            core.events.emit('webauth:new-user', request.session.id, username);
             request.session.setValue(_profile, user.toPublicObject());
-            events.emit('webauth:auth', request.session.id, user);
+            core.events.emit('webauth:auth', request.session.id, user);
             resolve({ status: 'ok', user:user.toPublicObject()});
         }
     })

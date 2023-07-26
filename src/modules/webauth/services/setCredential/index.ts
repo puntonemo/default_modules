@@ -1,14 +1,7 @@
-import { nemo } from "../..";
+import { core, ClientRequest, GenericObject, responseError } from '../..';
 import { User, _profile, _webauthFlowData } from "../..";
 import * as base64url from 'base64url';
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const responseError = nemo.responseError;
-const events = nemo.events;
-/*                                                   */
-/*****************************************************/
+
 
 const validateClientData = (credential:GenericObject, webauthFlowData:GenericObject, remoteAddress:string|string[]|undefined) => {
     let validated = true;
@@ -52,7 +45,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                             //user = User.get(credentialUser);
                             username = credentialUser;
                         }else{
-                            events.emit('webauth:error', request.session.id, 'setCredential:credential-not-found');
+                            core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-not-found');
                             reject(responseError(401, 'Credential not found'));
                         }
                     })
@@ -76,12 +69,12 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 //    credentials : []
                                 //}
                                 //fileDB.setValue('users', webauthFlowData.username, user);
-                                events.emit('webauth:new-user', request.session.id, webauthFlowData.username);
+                                core.events.emit('webauth:new-user', request.session.id, webauthFlowData.username);
                             }else{
                                 //credentialFound = user.credentials.find((cred:string)=>cred == credentialId);
                                 credentialFound = user.findCredential(credentialId);
                                 if(credentialFound){
-                                    events.emit('webauth:error', request.session.id, 'setCredential:credential-already-exists');
+                                    core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-already-exists');
                                     reject(responseError(400, 'Credential already registered'));
                                 }
                             }
@@ -91,7 +84,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 user.addCredential(credentialId);
                                 //fileDB.setValue('users', webauthFlowData.username, user);
                                 //fileDB.setValue('credentials', credentialId, webauthFlowData.username);
-                                events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
+                                core.events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
                                 resolve({
                                     status:'ok'
                                 });
@@ -105,7 +98,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                         //user.credentials.push(credentialId);
                                         //fileDB.setValue('users', webauthFlowData.username, user);
                                         //fileDB.setValue('credentials', credentialId, webauthFlowData.username);
-                                        events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
+                                        core.events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
                                         resolve({
                                             status:'ok'
                                         });
@@ -125,7 +118,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 if(credentialFound){
                                     //request.session.profile = user.toPublicObject();
                                     request.session.setValue(_profile, user.toPublicObject())
-                                    events.emit('webauth:auth', request.session.id, user);
+                                    core.events.emit('webauth:auth', request.session.id, user);
                                     resolve(user.toPublicObject())
                                 }else{
                                     reject(responseError(403, 'Invalid ClientialId'));
@@ -133,20 +126,19 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                             }
                             break;
                         default:
-                            events.emit('webauth:error', request.session.id, 'setCredential:invalid-clientDataType');
+                            core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientDataType');
                             reject(responseError(400));
                     }
                 })
             }else{
-                events.emit('webauth:error', request.session.id, 'setCredential:invalid-clientData');
+                core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientData');
                 reject(responseError(403, 'Invalid ClientData'));
             }
         })
     }else{
-        events.emit('webauth:error', request.session.id, 'setCredential:clientData-not-validated');
+        core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:clientData-not-validated');
         reject(responseError(400));
     }
-
 });
 
 export default setCredential;

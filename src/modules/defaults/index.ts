@@ -1,17 +1,26 @@
-import { nemo } from '../..';
+import  {core, Service, ClientRequest, GenericObject, responseError, fetch} from '../..';
+export  {core, Service, ClientRequest, GenericObject, responseError, fetch}
+
 import path from 'path';
 import fs from 'fs';
 import ejs from 'ejs';
-export { nemo };
 
 import myService from './services/myService';
 import secondService from './services/secondService';
 import shutdownService from './services/shutdownService';
-import serverStatus from './services/serverStatus';
 
-const myStaticsManager = (request:nemo.ClientRequest):Promise<nemo.GenericObject> => new Promise(async (resolve, reject)=>{
+export const init = () => {
+    console.log('Defaults Module v.1.9');
+
+    core.events.on('webauth:auth', (sessionId:string, userString:string)=>{
+        const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
+        console.log(`WEBAUTH (Remote) : User ${user.username} authenticated on session ${sessionId}`);
+    })
+}
+
+const myStaticsManager = (request:ClientRequest):Promise<GenericObject> => new Promise(async (resolve, reject)=>{
     try{
-        let response:nemo.GenericObject = {}
+        let response:GenericObject = {}
         if(request.params.redirect){
             response.__redirect = request.params.redirect;
         }
@@ -20,11 +29,11 @@ const myStaticsManager = (request:nemo.ClientRequest):Promise<nemo.GenericObject
         reject({error});
     }
 })
-const requestManager = (request:nemo.ClientRequest) => {
+const requestManager = (request:ClientRequest) => {
     console.log('Service Request Manager'); 
     return request;
 }
-const defaultResponseManager = (response:nemo.GenericObject, _request?:nemo.ClientRequest, res?:nemo.Response) => {
+const defaultResponseManager = (response:GenericObject, _request?:ClientRequest, res?:core.Response) => {
     
     if(res && response.hasOwnProperty('__redirect')){
         res?.redirect(302,response['__redirect']);
@@ -33,7 +42,7 @@ const defaultResponseManager = (response:nemo.GenericObject, _request?:nemo.Clie
     return response;
 
 }
-const emptyResponseManager = (response:nemo.GenericObject, _request?:nemo.ClientRequest, res?:nemo.Response) => {
+const emptyResponseManager = (response:GenericObject, _request?:ClientRequest, res?:core.Response) => {
     
     if(res && response.hasOwnProperty('__redirect')){
         if(res.writable){
@@ -44,7 +53,7 @@ const emptyResponseManager = (response:nemo.GenericObject, _request?:nemo.Client
 
     return undefined;
 }
-const renderer =(response:nemo.GenericObject, requestLang?:string|string[]) => {
+const renderer =(response:GenericObject, requestLang?:string|string[]) => {
     var lang:string|undefined;
     var view = response.view || 'default'
     if(typeof requestLang === 'string'){
@@ -64,17 +73,17 @@ const renderer =(response:nemo.GenericObject, requestLang?:string|string[]) => {
         const view = ejs.render(rfs, response, options);
         return view;    
     }catch(error){
-        return (error as nemo.GenericObject).message || error;
+        return (error as GenericObject).message || error;
     }
 }
-const renderManager = (request:nemo.ClientRequest):Promise<nemo.GenericObject> => new Promise((resolve, _reject)=>{
+const renderManager = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, _reject)=>{
     request.toGenericObject().then(requestObject=>{
         const response = {...{status:200, view:request.params.view || 'index'}, ...requestObject}
         resolve(response);
     })
 })
 
-export const Services:nemo.Service[] = [
+export const Services:Service[] = [
     {
         name: 'defaultsRender',
         get: '/',
@@ -111,12 +120,6 @@ export const Services:nemo.Service[] = [
         public:false
     },
     {
-        name : 'serverStatus',
-        get : '/api/serverStatus',
-        manager:serverStatus,
-        serviceType:'json'
-    },
-    {
         use : '/managedStatic',
         manager:myStaticsManager,
         serviceType:'json',
@@ -134,11 +137,3 @@ export const Services:nemo.Service[] = [
 ]
 
 
-export const init = () => {
-    console.log('Defaults Module v.1.8');
-
-    nemo.events.on('webauth:auth', (sessionId:string, userString:string)=>{
-        const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
-        console.log(`WEBAUTH (Remote) : User ${user.username} authenticated on session ${sessionId}`);
-    })
-}

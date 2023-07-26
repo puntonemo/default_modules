@@ -1,14 +1,5 @@
-import { nemo } from "../..";
+import { core, ClientRequest, GenericObject, responseError } from '../..';
 import { User, _deviceId, _login, _passportError, _profile } from "../..";
-
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const responseError = nemo.responseError;
-const events = nemo.events;
-/*                                                   */
-/*****************************************************/
 
 const loginCert = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
 
@@ -23,7 +14,7 @@ const loginCert = (request:ClientRequest):Promise<GenericObject> => new Promise(
             reject(responseError(404,`user not found`));
         }else{
             request.session.setValue(_profile, user.toPublicObject());
-            events.emit('webauth:auth', request.session.id, user);
+            core.events.emit('webauth:auth', request.session.id, user);
             resolve({ status: 'ok',user:user.toPublicObject()});
         }
     });

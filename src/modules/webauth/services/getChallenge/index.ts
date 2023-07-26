@@ -1,14 +1,5 @@
-import { nemo } from "../..";
+import { core, ClientRequest, GenericObject, responseError } from '../..';
 import { User, tools, _webauthFlowData } from "../..";
-
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const responseError = nemo.responseError;
-const events = nemo.events;
-/*                                                   */
-/*****************************************************/
 
 const getChallenge = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName} = request.params;
@@ -38,7 +29,7 @@ const getChallenge = (request:ClientRequest):Promise<GenericObject> => new Promi
             
         }catch(error){
             reject(responseError(500, error));
-            events.emit('webauth:error', request.session.id, 'getChallenge:error');
+            core.events.emit('webauth:error', request.session.id, 'getChallenge:error');
         }
     });
 })

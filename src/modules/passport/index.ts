@@ -1,28 +1,15 @@
-import { nemo } from '../..';
+import  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session} from '../..';
+export  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session}
 
 import getProviderAuthUrl from './services/getProviderAuthUrl';
 import digestProviderResponse from './services/digestProviderResponse';
 import decodeState from './services/decodeState';
 
-/*****************************************************/
-/* ShortHands                                        */
-type Service = nemo.Service;
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const responseError = nemo.responseError;
-const events = nemo.events;
-const Session = nemo.Session;
-export { nemo };
-/*                                                   */
-/*****************************************************/
-
 export const _deviceId = 'deviceId'
 
 export const init = () => {
-    console.log('PASSPORT Module v.1.6');
+    console.log('PASSPORT Module v.1.9');
 }
-
-
 
 export const Services:Service[] = [
     {

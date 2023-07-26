@@ -1,4 +1,6 @@
-import { nemo } from '../..';
+import  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session} from '../..';
+export  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session}
+
 import path from "path";
 import fs from 'fs';
 import ejs from 'ejs';
@@ -16,18 +18,6 @@ import setCredential from './services/setCredential';
 import getUserProfile from './services/getUserProfile';
 import logout from './services/logout';
 
-/*****************************************************/
-/* ShortHands                                        */
-type Service = nemo.Service;
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const events = nemo.events;
-const Session = nemo.Session;
-const invokeService = nemo.invokeService;
-export { nemo };
-/*                                                   */
-/*****************************************************/
-
 export const _profile = 'profile';
 export const _login = 'login';
 export const _deviceId = 'deviceId'
@@ -37,12 +27,12 @@ export const _webauthFlowData = 'webauthFlowData';
 export { User, tools };
 
 export const init = () => {
-    console.log('WEBAUTH Module v.1.7');
+    console.log('WEBAUTH Module v.1.9');
 
     /**
      * COMPATIBILITY WITH PASSPORT
      */
-    events.on('passportAuth', (sessionId:string, providerResponse:GenericObject) =>{
+    core.events.on('passportAuth', (sessionId:string, providerResponse:GenericObject) =>{
         Session.get(sessionId).then(session=>{
             session.getValue(_deviceId).then(deviceId=>{
                 if(deviceId == providerResponse.state.deviceId){
@@ -54,33 +44,33 @@ export const init = () => {
                             if(providerResponse.state.data == _login){
                                 if(user.getProviderId(providerResponse.profile.provider) == providerResponse.profile.id){
                                     session.setValue(_profile, user.toPublicObject());
-                                    events.emit('webauth:auth', sessionId, user);
+                                    core.events.emit('webauth:auth', sessionId, user);
                                     console.log(`WEBAUTH : Authenticated by passport on session ${sessionId}`);
                                 }else{
                                     console.log('WEBAUTH : ACCOUNT NOT REGISTERED (1)');
                                     session.delValue(_profile);
-                                    events.emit('webauth:error', sessionId, 'account-not-registered');
+                                    core.events.emit('webauth:error', sessionId, 'account-not-registered');
                                     session.setValue(_passportError, 'account-not-registered');
                                 }
                             }
                         }else{
                             user = new User(0, providerResponse.profile.email, providerResponse.profile.firstName, providerResponse.profile.lastName, undefined, providerResponse.profile.picture, providerResponse.profile.provider, providerResponse.profile.id);
                             session.setValue(_profile,  user.toPublicObject());
-                            events.emit('webauth:auth', sessionId, user);
+                            core.events.emit('webauth:auth', sessionId, user);
                         }
                     })
                 }
             })
         })
     })
-    events.on('webauth:auth', (sessionId:string, user:User)=>{
+    core.events.on('webauth:auth', (sessionId:string, user:User)=>{
         console.log(`WEBAUTH : User ${user.username} authenticated on session ${sessionId}`);
     })
 }
 
 const renderManager = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, _reject)=>{
     if(request.params.view=='passport' && request.params.state){
-        invokeService("passport.decodeState", request).then(async state=>{
+        core.invokeService("passport.decodeState", request).then(async state=>{
             const requestGO = await request.toGenericObject();
             const response = {...{status:200, state, view:request.params.view || 'default'}, ...requestGO}
             if(request.params.view=='passport'){

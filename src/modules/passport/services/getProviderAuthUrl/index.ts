@@ -1,15 +1,7 @@
-import { nemo } from "../..";
+import { ClientRequest, GenericObject, responseError } from '../..';
 import * as logic from './logic';
 import { _deviceId } from "../..";
 
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-const responseError = nemo.responseError;
-const events = nemo.events;
-/*                                                   */
-/*****************************************************/
 
 const getProviderAuthUrl = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
 	const {provider, redirect_uri, state, scopes} = request.params;

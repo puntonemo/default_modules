@@ -1,6 +1,6 @@
-import {nemo} from '../..';
+import { ClientRequest, GenericObject } from '../..';
 
-const shutdownService = (_request:nemo.ClientRequest):Promise<nemo.GenericObject> => new Promise(async (resolve, _reject)=>{
+const shutdownService = (_request:ClientRequest):Promise<GenericObject> => new Promise(async (resolve, _reject)=>{
     resolve({status:'ok'});
     setTimeout(()=>{
         process.abort();

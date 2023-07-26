@@ -1,9 +1,6 @@
 
 import fs from 'fs';
-import { nemo } from '../..';
-
-type GenericObject = nemo.GenericObject;
-
+import { GenericObject } from '../..';
 
 export default class FileDB {
     private db:GenericObject = {};

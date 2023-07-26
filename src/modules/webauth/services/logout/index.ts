@@ -1,12 +1,5 @@
-import { nemo } from "../..";
+import { ClientRequest, GenericObject } from '../..';
 import { _profile } from "../..";
-
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-/*                                                   */
-/*****************************************************/
 
 const logout = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve)=>{
     const {redirect_uri} = request.params;   

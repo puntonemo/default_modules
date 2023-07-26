@@ -1,12 +1,5 @@
-import { nemo } from "../..";
+import { ClientRequest, GenericObject } from '../..';
 import { _deviceId, _login, _passportError, _profile } from "../..";
-
-/*****************************************************/
-/* ShortHands                                        */
-type ClientRequest = nemo.ClientRequest;
-type GenericObject = nemo.GenericObject;
-/*                                                   */
-/*****************************************************/
 
 const getCertificateInfo = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const firstName =request.certificate?.subject?.GN.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, (letter: string) => letter.toUpperCase());

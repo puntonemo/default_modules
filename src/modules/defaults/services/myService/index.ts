@@ -1,6 +1,6 @@
-import {nemo} from '../..';
+import { ClientRequest, GenericObject, responseError } from '../..';
 
-const myService = (request:nemo.ClientRequest):Promise<nemo.GenericObject> => new Promise(async (resolve, reject)=>{
+const myService = (request:ClientRequest):Promise<GenericObject> => new Promise(async (resolve, reject)=>{
     const {isError, redirect} = request.params;
     try{
 
@@ -20,13 +20,13 @@ const myService = (request:nemo.ClientRequest):Promise<nemo.GenericObject> => ne
             //}).catch(error=>{
             //    reject(error);
             //})
-            let response:nemo.GenericObject = {
+            let response:GenericObject = {
                 request : await request.toGenericObject(),
                 version : 'local_only'
             };
             resolve(response);
         }else{
-            reject(nemo.responseError(500,'internal cusom error'));
+            reject(responseError(500,'internal cusom error'));
         }
     }catch(error){
         reject({error});
