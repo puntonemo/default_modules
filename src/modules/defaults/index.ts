@@ -12,9 +12,18 @@ import shutdownService from './services/shutdownService';
 export const init = () => {
     console.log('Defaults Module v.1.9');
 
-    core.events.on('webauth:auth', (sessionId:string, userString:string)=>{
+    /* WEBAUTH COMPATIBILITY 1.9 */
+    core.events.on('webauth:login', (sessionId:string, userString:string)=>{
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
         console.log(`WEBAUTH (Remote) : User ${user.username} authenticated on session ${sessionId}`);
+    })
+    core.events.on('webauth:register', (sessionId:string, userString:string)=>{
+        const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
+        console.log(`WEBAUTH (Remote) : User ${user.username} registered on session ${sessionId}`);
+    })
+    core.events.on('webauth:error', (sessionId:string, userString:string, error:string) => {
+        const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
+        console.log(`WEBAUTH (Remote) : Error authenticating user ${user.username} on session ${sessionId} - ${error}`);
     })
 }
 
@@ -135,5 +144,3 @@ export const Services:Service[] = [
         }
     }
 ]
-
-

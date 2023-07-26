@@ -151,8 +151,8 @@ const getGoogleTokens = (code:string) =>
             url: 'https://oauth2.googleapis.com/token',
             data: data
         }).then(response=>{
-            response.data.provider = 'google';
-            resolve(response.data);
+            response.provider = 'google';
+            resolve(response);
         }).catch(error=>{
             var errorResponse = {   
                 result  : "error",
@@ -201,8 +201,8 @@ const getLiveTokens = (code:string) =>
             url: url,
             data: new URLSearchParams(data).toString()
         }).then(response=>{
-            response.data.provider = 'live';
-            resolve(response.data);
+            response.provider = 'live';
+            resolve(response);
         }).catch(error=>{
             var errorResponse = {   
                 result  : "error",
@@ -247,8 +247,8 @@ const getTwitterTokens = (code:string) =>
             url: 'https://api.twitter.com/2/oauth2/token',            
             data: data
         }).then(response=>{
-            response.data.provider = 'twitter';
-            resolve(response.data);
+            response.provider = 'twitter';
+            resolve(response);
         }).catch(error=>{
             var errorResponse = {   
                 result  : "error",
@@ -336,7 +336,7 @@ const getGoogleProfile = (token:GenericObject) =>
                 Authorization: `Bearer ${token.id_token}`
             }
         }).then(response=>{
-            var profile = response.data;
+            var profile = response;
             profile.provider = 'google';
             resolve(profile);
         }).catch(error=>{
@@ -355,7 +355,7 @@ const getTwitterProfile = (token:GenericObject) =>
                 Authorization: `Bearer ${token.access_token}`
             }
         }).then(response=>{
-            var profile = response.data.data;
+            var profile = response.data;
             profile.provider = 'twitter';
             resolve(profile);
         }).catch(error=>{
@@ -369,7 +369,7 @@ const getLiveProfile = (token:GenericObject) =>
                 'Authorization': `Bearer ${token.access_token}`
             }
         }).then((response) => {
-            var profile = response.data;
+            var profile = response;
             profile.provider = 'live';
             resolve(profile);
         }).catch((error) => {

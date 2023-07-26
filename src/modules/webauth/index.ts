@@ -20,6 +20,7 @@ import logout from './services/logout';
 
 export const _profile = 'profile';
 export const _login = 'login';
+export const _register = 'register';
 export const _deviceId = 'deviceId'
 export const _passportError = 'passportError';
 export const _webauthFlowData = 'webauthFlowData';
@@ -49,14 +50,22 @@ export const init = () => {
                                 }else{
                                     console.log('WEBAUTH : ACCOUNT NOT REGISTERED (1)');
                                     session.delValue(_profile);
-                                    core.events.emit('webauth:error', sessionId, 'account-not-registered');
+                                    core.events.emit('webauth:error', sessionId, user.toPublicObject(), 'account-not-registered');
+
                                     session.setValue(_passportError, 'account-not-registered');
                                 }
+                            }
+                            if(providerResponse.state.data == _register){
+                                user.setProviderId(providerResponse.profile.provider, providerResponse.profile.id);
+                                session.setValue(_profile, user.toPublicObject());
+                                core.events.emit('webauth:register', sessionId, user);
+                                console.log(`WEBAUTH : Authenticated (register) by passport on session ${sessionId}`);
                             }
                         }else{
                             user = new User(0, providerResponse.profile.email, providerResponse.profile.firstName, providerResponse.profile.lastName, undefined, providerResponse.profile.picture, providerResponse.profile.provider, providerResponse.profile.id);
                             session.setValue(_profile,  user.toPublicObject());
                             core.events.emit('webauth:auth', sessionId, user);
+
                         }
                     })
                 }

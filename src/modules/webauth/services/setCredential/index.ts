@@ -6,7 +6,7 @@ import * as base64url from 'base64url';
 const validateClientData = (credential:GenericObject, webauthFlowData:GenericObject, remoteAddress:string|string[]|undefined) => {
     let validated = true;
     let clientDataObj;
-    if(credential.clientData && webauthFlowData.challenge && webauthFlowData.origin){
+    if(credential.clientData && webauthFlowData?.challenge && webauthFlowData?.origin){
         const decodedClientData = base64url.default.decode(credential.clientData);
         clientDataObj = JSON.parse(decodedClientData);
         if(clientDataObj.challenge != webauthFlowData.challenge) validated = false;
