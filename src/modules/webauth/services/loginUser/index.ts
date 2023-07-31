@@ -17,7 +17,7 @@ const loginUser = (request:ClientRequest):Promise<GenericObject> => new Promise(
                     reject(responseError(403, `login failed`));
                 }else{
                     request.session.setValue(_profile, user.toPublicObject());
-                    core.events.emit('webauth:auth', request.session.id, user);
+                    core.events.emit('webauth:auth', request.session.id, user.toPublicObject());
                     resolve ({ 
                         status: 'ok',
                         user: user.toPublicObject()

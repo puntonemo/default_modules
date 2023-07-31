@@ -8,22 +8,23 @@ import ejs from 'ejs';
 import myService from './services/myService';
 import secondService from './services/secondService';
 import shutdownService from './services/shutdownService';
+import {renderManager, renderer} from './render';
 
 export const init = () => {
-    console.log('Defaults Module v.1.9');
+    console.log('Defaults Module v.1.9.3');
 
     /* WEBAUTH COMPATIBILITY 1.9 */
     core.events.on('webauth:login', (sessionId:string, userString:string)=>{
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
-        console.log(`WEBAUTH (Remote) : User ${user.username} authenticated on session ${sessionId}`);
+        console.log(`WEBAUTH (Remote) : User ${user?.username || 'unknown'} authenticated on session ${sessionId}`);
     })
     core.events.on('webauth:register', (sessionId:string, userString:string)=>{
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
-        console.log(`WEBAUTH (Remote) : User ${user.username} registered on session ${sessionId}`);
+        console.log(`WEBAUTH (Remote) : User ${user?.username || 'unknown'} registered on session ${sessionId}`);
     })
     core.events.on('webauth:error', (sessionId:string, userString:string, error:string) => {
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
-        console.log(`WEBAUTH (Remote) : Error authenticating user ${user.username} on session ${sessionId} - ${error}`);
+        console.log(`WEBAUTH (Remote) : Error authenticating user ${user?.username || 'unknown'} on session ${sessionId} - ${error}`);
     })
 }
 
@@ -62,35 +63,14 @@ const emptyResponseManager = (response:GenericObject, _request?:ClientRequest, r
 
     return undefined;
 }
-const renderer =(response:GenericObject, requestLang?:string|string[]) => {
-    var lang:string|undefined;
-    var view = response.view || 'default'
-    if(typeof requestLang === 'string'){
-        lang = requestLang
-    };
-    if(Array.isArray(requestLang)){
-        lang = requestLang[0].substring(0,2).toLowerCase();
-    }
-    //DEBUG ONLY
-    const options = {
-        views: [path.join(__dirname, './views')],
-        async: false
-    }
-
-    try{
-        const rfs = fs.readFileSync(path.join(__dirname, './views', `${response.view}.ejs`), 'utf8');
-        const view = ejs.render(rfs, response, options);
-        return view;    
-    }catch(error){
-        return (error as GenericObject).message || error;
-    }
+const policy:core.PolicyChecker = async (request:ClientRequest) => {
+    const profile = await request.session.getValue('profile') as GenericObject;
+    const username:string = profile?.username;
+    if(username && username.endsWith('@domain.com'))
+        return true;
+    else
+        throw responseError(401);
 }
-const renderManager = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, _reject)=>{
-    request.toGenericObject().then(requestObject=>{
-        const response = {...{status:200, view:request.params.view || 'index'}, ...requestObject}
-        resolve(response);
-    })
-})
 
 export const Services:Service[] = [
     {
@@ -119,7 +99,8 @@ export const Services:Service[] = [
         get : '/api/1/secondService',
         manager:secondService,
         serviceType:'json',
-        requestManager:requestManager,
+        requestManager,
+        policy
     },
     {
         name : 'shutdown',

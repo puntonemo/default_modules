@@ -47,6 +47,8 @@ const signUpInitPageEvents = async () => {
                     }).catch(errorCode=>{
                         alert(`Device not registered. errorCode=${errorCode}`)
                     })
+                }else{
+                    window.location = "/";
                 }
             }).catch(error=>{
                 if(error.status == 400){

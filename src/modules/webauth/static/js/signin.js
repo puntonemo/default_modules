@@ -145,6 +145,7 @@ const signInUser = async (username) => {
             return
         }
     }catch(error){
+        if(error.info) alert(error.info);
         console.warn(error);
         signInWithPassword();
     }

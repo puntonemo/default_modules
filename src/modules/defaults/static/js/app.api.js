@@ -113,7 +113,7 @@ var app = (function(public) {
             if(promises[tid]){
                 promises[tid].reject(response);
                 clearTimeout(promises[tid].timeout);
-                console.log('error, add an event here', response);
+                //console.log('error, add an event here', response);
                 delete promises[tid];
             }            
         });
@@ -349,7 +349,7 @@ var app = (function(public) {
             }
             fetch(url, options).then(res => res.json()).then(res => {
                 if(res.result === 'error'){
-                    console.log('error, add an event here', res);
+                    //console.log('error, add an event here', res);
                     reject(res);
                 }
                 if(res.hasOwnProperty('token')){
@@ -386,7 +386,7 @@ var app = (function(public) {
     const invoke = (methodName, data, feedback) => new Promise ((resolve, reject)=>{
         const method = methods[methodName];
         if(method){
-            if(public.connected){
+            if(public.connected && method.serviceType!='proxy'){
                 emit(methodName, data, feedback).then(response=>resolve(response)).catch(error=>reject(error));
             }else{
                 let httpMethod = undefined;

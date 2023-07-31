@@ -13,7 +13,7 @@ export const Services:Service[] = [
         serviceType:'json',
         serviceState:'stateless',
         public:false,
-        excludeFromReplicas:false,
+        excludeFromReplicas:true,
         get:'/api/serverManagement/config',
         manager : getConfig
     }

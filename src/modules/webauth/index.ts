@@ -17,6 +17,7 @@ import getChallenge from './services/getChallenge';
 import setCredential from './services/setCredential';
 import getUserProfile from './services/getUserProfile';
 import logout from './services/logout';
+import {renderManager, renderer} from './render';
 
 export const _profile = 'profile';
 export const _login = 'login';
@@ -28,7 +29,7 @@ export const _webauthFlowData = 'webauthFlowData';
 export { User, tools };
 
 export const init = () => {
-    console.log('WEBAUTH Module v.1.9');
+    console.log('WEBAUTH Module v.1.9.3');
 
     /**
      * COMPATIBILITY WITH PASSPORT
@@ -45,7 +46,7 @@ export const init = () => {
                             if(providerResponse.state.data == _login){
                                 if(user.getProviderId(providerResponse.profile.provider) == providerResponse.profile.id){
                                     session.setValue(_profile, user.toPublicObject());
-                                    core.events.emit('webauth:auth', sessionId, user);
+                                    core.events.emit('webauth:auth', sessionId, user.toPublicObject());
                                     console.log(`WEBAUTH : Authenticated by passport on session ${sessionId}`);
                                 }else{
                                     console.log('WEBAUTH : ACCOUNT NOT REGISTERED (1)');
@@ -77,63 +78,7 @@ export const init = () => {
     })
 }
 
-const renderManager = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, _reject)=>{
-    if(request.params.view=='passport' && request.params.state){
-        core.invokeService("passport.decodeState", request).then(async state=>{
-            const requestGO = await request.toGenericObject();
-            const response = {...{status:200, state, view:request.params.view || 'default'}, ...requestGO}
-            if(request.params.view=='passport'){
-                if(request.params.state){
-                    if(request.session.id == ''){
-                        const stateSessionId = (state as GenericObject).state.sessionId;
-                        console.log(`\x1b[33mThis request has no session - Trying ${stateSessionId}\x1b[0m`);
-                        const stateSession = await Session.get(stateSessionId);
-                        const stateSessionRemoteAddress = await stateSession.getValue('remoteAddess');
-                        const stateSessionUserAgent = await stateSession.getValue('userAgent');
-                        
-                        if(stateSessionRemoteAddress == request.remoteAddress && stateSessionUserAgent == request.headers['user-agent']){
-                            console.log(`\x1b[32mSession ${stateSessionId}seems to be same origin\x1b[0m`);
-                            request.setCookie('sid', stateSessionId);
-                        }
-                    }
-                }else{
-                    console.log(`\x1b[33mView \x1b[34m'passport'\x1b[33m requires a \x1b[34m'state'\x1b[33m param \x1b[0m`)
-                }
-            }
-            resolve(response);
-        }).catch(error=>{
-            console.log('passport error', error);
-            const response = {...{status:500, view:'passportError', error}}
-            resolve(response);
-        })
-    }else{
-        const response = {...{status:200, view:request.params.view || 'default'}, ...request.toGenericObject()}
-        resolve(response);
-    }
-});
-const renderer =(response:GenericObject, requestLang?:string|string[]) => {
-    var lang:string|undefined;
-    var view = response.view || 'default'
-    if(typeof requestLang === 'string'){
-        lang = requestLang
-    };
-    if(Array.isArray(requestLang)){
-        lang = requestLang[0].substring(0,2).toLowerCase();
-    }
-    //DEBUG ONLY
-    const options = {
-        views: [path.join(__dirname, './views')],
-        async: false
-    }
 
-    try{
-        const rfs = fs.readFileSync(path.join(__dirname, './views', `${response.view}.ejs`), 'utf8');
-        const view = ejs.render(rfs, response, options);
-        return view;    
-    }catch(error){
-        return (error as GenericObject).message || error;
-    }
-}
 export const Services:Service[] = [
     {
         name: "registerUser",

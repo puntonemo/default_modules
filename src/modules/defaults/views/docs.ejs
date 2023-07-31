@@ -1,0 +1,61 @@
+<%- include('_header') -%>
+<body class="bg-white overflow-hidden">
+    <%- include('_navigation') -%>
+    <main><!-- Page Content -->
+      <section class="pt-lg-14 pt-md-10 pt-7 pb-lg-5 pb-md-5 pb-4 position-relative">
+        <div class="container">         
+          <p>
+            <h3>Disconnected Mode</h3>
+            <h4>Invoke an internal service by name:</h4>
+            <code>
+              <p>await app.api.defaults.myService({foo:'bar'});</p>
+              <p class="text-muted">is equivalent to:</p>
+              <p class="mb-0">fetch("<strong id="documentLocation"></strong>/api/1/myService?foo=bar").then(</p>
+              <p class="mb-0 ms-3">res=>res.json()</p>
+              <p class="mb-0">).then(</p>
+              <p class="mb-0 ms-3">response=>{
+              <p class="mb-0 ms-6">console.log(response)</p>
+              <p class="mb-0 ms-3">}</p>
+              <p class="mb-0">)</p>
+              <script>
+                document
+                  .getElementById("documentLocation")
+                  .appendChild(document.createTextNode(`${document.location.protocol}//${document.location.host || document.location.hostname}`));
+              </script>
+            </code>
+          </p>
+          <p>
+            <h4>Invoke a 3rd party API service by name:</h4>
+            <code>
+              await app.api.defaults.TMDBSearchMovie('Inception', 'es', 'd663ab4d447579e41880b1c772e72351')
+            </code>
+            <hr>
+          </p>
+          <p>
+            <h4>Applying Services Policy:</h4>
+            <code>
+            <p>await app.api.webauth.loginUser({username:'user@domain.com', password:'password'})</p>
+            </code>
+            <code>
+            <p>await app.api.defaults.secondService()</p>
+            </code>
+            <hr>
+          </p>
+          <p>
+            <h3>Connected Mode</h3>
+            <h4>Connect and get feedback:</h4>
+            <code>
+              <p>app.connect();</p>
+              <p class="mb-0">await app.api.defaults.secondService({}, (feedback)=>{</p>
+              <p class="mb-0 ms-5">console.log(feedback)</p>
+              <p class="mb-0">})</p>
+            </code>
+          </p>
+        </div>
+      </section>
+    </main>
+    <%- include('_footer') -%>
+    <!-- Scripts -->
+    <%- include('_scripts') -%>
+</body>
+</html>

@@ -5,4 +5,4 @@
 /dist
 /src/nemo
 */ssl
-database.json
+**/database.json
