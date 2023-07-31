@@ -30,7 +30,7 @@ WEBAUTH_ORIGIN                  = http://localhost:3000
 # AUTH_MODULE_PASSPORT
 ENCRYPTION_KEY                  = ---ENCRYPTION_KEY----
 REDIRECT_URI_BASE               = http://localhost:3000
-REDIRECT_URI_PATH               = /api/passport/respose
+REDIRECT_URI_PATH               = /api/passport/response
 
 GOOGLE_CLIENT_ID                = ----GOOGLE_CLIENT_ID----
 GOOGLE_CLIENT_SECRET            = ----GOOGLE_CLIENT_SECRET----
