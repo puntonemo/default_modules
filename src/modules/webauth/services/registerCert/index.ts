@@ -1,5 +1,6 @@
-import { core, ClientRequest, GenericObject, responseError } from '../..';
-import { User, _deviceId, _login, _passportError, _profile } from "../..";
+import { ClientRequest, GenericObject, responseError, events } from 'core';
+import User from 'model/User';
+import { _deviceId, _login, _passportError, _profile } from "../..";
 
 const registerCert = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName} = request.params;
@@ -29,7 +30,7 @@ const registerCert = (request:ClientRequest):Promise<GenericObject> => new Promi
                 lastName,
                 undefined
             ).addCertificate(certSerialNumber);
-            core.events.emit('webauth:new-certificate', request.session.id, certSerialNumber, username);
+            events.emit('webauth:new-certificate', request.session.id, certSerialNumber, username);
         }else{
             //if(!user.certificates) user.certificates = [];
             //const certificateFound = user.certificates.find((cred:string)=>cred == certSerialNumber);
@@ -39,14 +40,14 @@ const registerCert = (request:ClientRequest):Promise<GenericObject> => new Promi
                 //user.certificates.push(certSerialNumber)
                 //fileDB.setValue('certificates', certSerialNumber, username);
                 user.addCertificate(certSerialNumber);
-                core.events.emit('webauth:new-certificate', request.session.id, certSerialNumber, username);
+                events.emit('webauth:new-certificate', request.session.id, certSerialNumber, username);
             }else{
                 //Certificate already registered
             }
         }
         //fileDB.setValue('users', username, user);     
         request.session.setValue(_profile, user.toPublicObject());
-        core.events.emit('webauth:auth', request.session.id, user);
+        events.emit('webauth:auth', request.session.id, user);
         resolve({ status: 'ok', user: user.toPublicObject()})
     })
 });

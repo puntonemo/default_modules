@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@core" : ["./core"],
+      "@model/*" : ["./model/*"],
+      "@modules/*" : ["./modules/*"],
+      "@tools/*" : ["./tools/*"]
+    },
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */

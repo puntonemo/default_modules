@@ -1,4 +1,4 @@
-import { ClientRequest, GenericObject, responseError } from '../..';
+import { ClientRequest, GenericObject, responseError } from 'core';
 
 const secondService = (request:ClientRequest):Promise<GenericObject> => new Promise(async (resolve, reject)=>{
     const {isError} = request.params;

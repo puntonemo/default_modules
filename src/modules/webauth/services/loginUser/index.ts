@@ -1,5 +1,8 @@
-import { core, ClientRequest, GenericObject, responseError } from '../..';
-import { User, tools, _deviceId, _login, _passportError, _profile } from "../..";
+import { ClientRequest, GenericObject, responseError, events } from 'core';
+import User from 'model/User';
+import * as tools from '../../tools';
+
+import { _deviceId, _login, _passportError, _profile } from "../..";
 
 const loginUser = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, password} = request.params;
@@ -17,7 +20,7 @@ const loginUser = (request:ClientRequest):Promise<GenericObject> => new Promise(
                     reject(responseError(403, `login failed`));
                 }else{
                     request.session.setValue(_profile, user.toPublicObject());
-                    core.events.emit('webauth:auth', request.session.id, user.toPublicObject());
+                    events.emit('webauth:auth', request.session.id, user.toPublicObject());
                     resolve ({ 
                         status: 'ok',
                         user: user.toPublicObject()

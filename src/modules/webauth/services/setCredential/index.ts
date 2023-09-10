@@ -1,5 +1,6 @@
-import { core, ClientRequest, GenericObject, responseError } from '../..';
-import { User, _profile, _webauthFlowData } from "../..";
+import { ClientRequest, GenericObject, responseError, events } from 'core';
+import { _profile, _webauthFlowData } from "../..";
+import User from 'model/User';
 import * as base64url from 'base64url';
 
 
@@ -45,7 +46,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                             //user = User.get(credentialUser);
                             username = credentialUser;
                         }else{
-                            core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-not-found');
+                            events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-not-found');
                             reject(responseError(401, 'Credential not found'));
                         }
                     })
@@ -69,12 +70,12 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 //    credentials : []
                                 //}
                                 //fileDB.setValue('users', webauthFlowData.username, user);
-                                core.events.emit('webauth:new-user', request.session.id, webauthFlowData.username);
+                                events.emit('webauth:new-user', request.session.id, webauthFlowData.username);
                             }else{
                                 //credentialFound = user.credentials.find((cred:string)=>cred == credentialId);
                                 credentialFound = user.findCredential(credentialId);
                                 if(credentialFound){
-                                    core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-already-exists');
+                                    events.emit('webauth:error', request.session.id, undefined, 'setCredential:credential-already-exists');
                                     reject(responseError(400, 'Credential already registered'));
                                 }
                             }
@@ -84,7 +85,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 user.addCredential(credentialId);
                                 //fileDB.setValue('users', webauthFlowData.username, user);
                                 //fileDB.setValue('credentials', credentialId, webauthFlowData.username);
-                                core.events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
+                                events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
                                 resolve({
                                     status:'ok'
                                 });
@@ -98,7 +99,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                         //user.credentials.push(credentialId);
                                         //fileDB.setValue('users', webauthFlowData.username, user);
                                         //fileDB.setValue('credentials', credentialId, webauthFlowData.username);
-                                        core.events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
+                                        events.emit('webauth:new-credential', request.session.id, credentialId, webauthFlowData.username);
                                         resolve({
                                             status:'ok'
                                         });
@@ -118,7 +119,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 if(credentialFound){
                                     //request.session.profile = user.toPublicObject();
                                     request.session.setValue(_profile, user.toPublicObject())
-                                    core.events.emit('webauth:auth', request.session.id, user);
+                                    events.emit('webauth:auth', request.session.id, user);
                                     resolve(user.toPublicObject())
                                 }else{
                                     reject(responseError(403, 'Invalid ClientialId'));
@@ -126,17 +127,17 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                             }
                             break;
                         default:
-                            core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientDataType');
+                            events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientDataType');
                             reject(responseError(400));
                     }
                 })
             }else{
-                core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientData');
+                events.emit('webauth:error', request.session.id, undefined, 'setCredential:invalid-clientData');
                 reject(responseError(403, 'Invalid ClientData'));
             }
         })
     }else{
-        core.events.emit('webauth:error', request.session.id, undefined, 'setCredential:clientData-not-validated');
+        events.emit('webauth:error', request.session.id, undefined, 'setCredential:clientData-not-validated');
         reject(responseError(400));
     }
 });

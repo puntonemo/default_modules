@@ -1,4 +1,4 @@
-import { core, ClientRequest, GenericObject } from '..';
+import { ClientRequest, GenericObject, Session, invokeService } from 'core'
 import path from 'path';
 import fs from 'fs';
 import ejs from 'ejs';
@@ -31,7 +31,7 @@ export const renderer =(response:GenericObject, requestLang?:string|string[]) =>
 }
 export const renderManager = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, _reject)=>{
     if(request.params.view=='passport' && request.params.state){
-        core.invokeService("passport.decodeState", request).then(async state=>{
+        invokeService("passport.decodeState", request).then(async state=>{
             const requestGO = await request.toGenericObject();
             const response = {...{status:200, state, view:request.params.view || 'default'}, ...requestGO}
             if(request.params.view=='passport'){
@@ -39,7 +39,7 @@ export const renderManager = (request:ClientRequest):Promise<GenericObject> => n
                     if(request.session.id == ''){
                         const stateSessionId = (state as GenericObject).state.sessionId;
                         console.log(`\x1b[33mThis request has no session - Trying ${stateSessionId}\x1b[0m`);
-                        const stateSession = await core.Session.get(stateSessionId);
+                        const stateSession = await Session.get(stateSessionId);
                         const stateSessionRemoteAddress = await stateSession.getValue('remoteAddess');
                         const stateSessionUserAgent = await stateSession.getValue('userAgent');
                         

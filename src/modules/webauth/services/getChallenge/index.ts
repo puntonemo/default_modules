@@ -1,4 +1,4 @@
-import { core, ClientRequest, GenericObject, responseError } from '../..';
+import { ClientRequest, GenericObject, responseError, events } from 'core';
 import { User, tools, _webauthFlowData } from "../..";
 
 const getChallenge = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
@@ -29,7 +29,7 @@ const getChallenge = (request:ClientRequest):Promise<GenericObject> => new Promi
             
         }catch(error){
             reject(responseError(500, error));
-            core.events.emit('webauth:error', request.session.id, 'getChallenge:error');
+            events.emit('webauth:error', request.session.id, 'getChallenge:error');
         }
     });
 })

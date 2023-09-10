@@ -1,28 +1,25 @@
-import  {core, Service, ClientRequest, GenericObject, responseError, fetch} from '../..';
-export  {core, Service, ClientRequest, GenericObject, responseError, fetch}
+import  { Service, ClientRequest, GenericObject, Response, responseError, events, PolicyChecker } from 'core';
 
 import path from 'path';
-import fs from 'fs';
-import ejs from 'ejs';
 
 import myService from './services/myService';
 import secondService from './services/secondService';
 import shutdownService from './services/shutdownService';
 import {renderManager, renderer} from './render';
 
-export const init = () => {
-    console.log('Defaults Module v.1.9.3');
+export const version = "1.9.4";
 
+export const init = () => {
     /* WEBAUTH COMPATIBILITY 1.9 */
-    core.events.on('webauth:login', (sessionId:string, userString:string)=>{
+    events.on('webauth:login', (sessionId:string, userString:string)=>{
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
         console.log(`WEBAUTH (Remote) : User ${user?.username || 'unknown'} authenticated on session ${sessionId}`);
     })
-    core.events.on('webauth:register', (sessionId:string, userString:string)=>{
+    events.on('webauth:register', (sessionId:string, userString:string)=>{
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
         console.log(`WEBAUTH (Remote) : User ${user?.username || 'unknown'} registered on session ${sessionId}`);
     })
-    core.events.on('webauth:error', (sessionId:string, userString:string, error:string) => {
+    events.on('webauth:error', (sessionId:string, userString:string, error:string) => {
         const user = typeof userString == 'string' ? JSON.parse(userString) : userString;
         console.log(`WEBAUTH (Remote) : Error authenticating user ${user?.username || 'unknown'} on session ${sessionId} - ${error}`);
     })
@@ -43,7 +40,7 @@ const requestManager = (request:ClientRequest) => {
     console.log('Service Request Manager'); 
     return request;
 }
-const defaultResponseManager = (response:GenericObject, _request?:ClientRequest, res?:core.Response) => {
+const defaultResponseManager = (response:GenericObject, _request?:ClientRequest, res?:Response) => {
     
     if(res && response.hasOwnProperty('__redirect')){
         res?.redirect(302,response['__redirect']);
@@ -52,7 +49,7 @@ const defaultResponseManager = (response:GenericObject, _request?:ClientRequest,
     return response;
 
 }
-const emptyResponseManager = (response:GenericObject, _request?:ClientRequest, res?:core.Response) => {
+const emptyResponseManager = (response:GenericObject, _request?:ClientRequest, res?:Response) => {
     
     if(res && response.hasOwnProperty('__redirect')){
         if(res.writable){
@@ -63,7 +60,7 @@ const emptyResponseManager = (response:GenericObject, _request?:ClientRequest, r
 
     return undefined;
 }
-const policy:core.PolicyChecker = async (request:ClientRequest) => {
+const policy:PolicyChecker = async (request:ClientRequest) => {
     const profile = await request.session.getValue('profile') as GenericObject;
     const username:string = profile?.username;
     if(username && username.endsWith('@domain.com'))

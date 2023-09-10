@@ -1,4 +1,4 @@
-import { ClientRequest, GenericObject } from '../..';
+import { ClientRequest, GenericObject } from 'core';
 import { _profile } from "../..";
 
 const logout = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve)=>{

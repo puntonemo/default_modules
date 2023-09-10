@@ -1,6 +1,6 @@
 
 import fs from 'fs';
-import { GenericObject } from '../..';
+import { GenericObject } from 'core';
 
 export default class FileDB {
     private db:GenericObject = {};

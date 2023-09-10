@@ -1,4 +1,4 @@
-import { GenericObject, fetch } from '../..';
+import { GenericObject, fetch } from 'core';
 import { encrypt, decrypt } from "../../tools";
 
 type StandarizedUserProfile = {

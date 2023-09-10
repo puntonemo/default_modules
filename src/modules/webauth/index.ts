@@ -1,10 +1,6 @@
-import  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session} from '../..';
-export  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session}
+import  { Service, ClientRequest, GenericObject, events, Session } from 'core';
 
 import path from "path";
-import fs from 'fs';
-import ejs from 'ejs';
-
 import * as tools from './tools';
 import User from '../../model/User';
 
@@ -28,13 +24,13 @@ export const _webauthFlowData = 'webauthFlowData';
 
 export { User, tools };
 
-export const init = () => {
-    console.log('WEBAUTH Module v.1.9.3');
+export const version = "1.9.4"
 
+export const init = () => {
     /**
      * COMPATIBILITY WITH PASSPORT
      */
-    core.events.on('passportAuth', (sessionId:string, providerResponse:GenericObject) =>{
+    events.on('passportAuth', (sessionId:string, providerResponse:GenericObject) =>{
         Session.get(sessionId).then(session=>{
             session.getValue(_deviceId).then(deviceId=>{
                 if(deviceId == providerResponse.state.deviceId){
@@ -46,12 +42,12 @@ export const init = () => {
                             if(providerResponse.state.data == _login){
                                 if(user.getProviderId(providerResponse.profile.provider) == providerResponse.profile.id){
                                     session.setValue(_profile, user.toPublicObject());
-                                    core.events.emit('webauth:auth', sessionId, user.toPublicObject());
+                                    events.emit('webauth:auth', sessionId, user.toPublicObject());
                                     console.log(`WEBAUTH : Authenticated by passport on session ${sessionId}`);
                                 }else{
                                     console.log('WEBAUTH : ACCOUNT NOT REGISTERED (1)');
                                     session.delValue(_profile);
-                                    core.events.emit('webauth:error', sessionId, user.toPublicObject(), 'account-not-registered');
+                                    events.emit('webauth:error', sessionId, user.toPublicObject(), 'account-not-registered');
 
                                     session.setValue(_passportError, 'account-not-registered');
                                 }
@@ -59,13 +55,13 @@ export const init = () => {
                             if(providerResponse.state.data == _register){
                                 user.setProviderId(providerResponse.profile.provider, providerResponse.profile.id);
                                 session.setValue(_profile, user.toPublicObject());
-                                core.events.emit('webauth:register', sessionId, user);
+                                events.emit('webauth:register', sessionId, user);
                                 console.log(`WEBAUTH : Authenticated (register) by passport on session ${sessionId}`);
                             }
                         }else{
                             user = new User(0, providerResponse.profile.email, providerResponse.profile.firstName, providerResponse.profile.lastName, undefined, providerResponse.profile.picture, providerResponse.profile.provider, providerResponse.profile.id);
                             session.setValue(_profile,  user.toPublicObject());
-                            core.events.emit('webauth:auth', sessionId, user);
+                            events.emit('webauth:auth', sessionId, user);
 
                         }
                     })
@@ -73,7 +69,7 @@ export const init = () => {
             })
         })
     })
-    core.events.on('webauth:auth', (sessionId:string, user:User)=>{
+    events.on('webauth:auth', (sessionId:string, user:User)=>{
         console.log(`WEBAUTH : User ${user.username} authenticated on session ${sessionId}`);
     })
 }

@@ -1,6 +1,5 @@
-import { ClientRequest, GenericObject, responseError } from '../..';
+import { ClientRequest, GenericObject, responseError } from 'core';
 import * as logic from './logic';
-
 
 const decodeState = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     if(request.params.state){

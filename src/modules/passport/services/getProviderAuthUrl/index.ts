@@ -1,4 +1,4 @@
-import { ClientRequest, GenericObject, responseError } from '../..';
+import { ClientRequest, GenericObject, responseError } from 'core';
 import * as logic from './logic';
 import { _deviceId } from "../..";
 

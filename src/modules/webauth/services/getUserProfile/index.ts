@@ -1,4 +1,4 @@
-import { ClientRequest, GenericObject, responseError } from '../..';
+import { ClientRequest, GenericObject, responseError } from 'core';
 import { User, _profile } from "../..";
 
 const getUserProfile = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{

@@ -1,10 +1,10 @@
-import  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session} from '../..';
-export  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session}
+import  { Service } from 'core';
 
 import getConfig from './services/getConfig';
 
+export const version = "1.9.1";
+
 export const init = () => {
-    console.log('SERVER MANAGEMENT Module v.1.9');
 }
 
 export const Services:Service[] = [

@@ -1,5 +1,4 @@
-import  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session} from '../..';
-export  {core, Service, ClientRequest, GenericObject, responseError, fetch, Session}
+import  { Service } from 'core';
 
 import getProviderAuthUrl from './services/getProviderAuthUrl';
 import digestProviderResponse from './services/digestProviderResponse';
@@ -7,8 +6,9 @@ import decodeState from './services/decodeState';
 
 export const _deviceId = 'deviceId'
 
+export const version = "1.9.4";
+
 export const init = () => {
-    console.log('PASSPORT Module v.1.9.3');
 }
 
 export const Services:Service[] = [

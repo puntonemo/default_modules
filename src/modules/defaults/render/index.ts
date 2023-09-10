@@ -1,4 +1,4 @@
-import { ClientRequest, GenericObject } from '..';
+import { ClientRequest, GenericObject } from 'core';
 import path from 'path';
 import fs from 'fs';
 import ejs from 'ejs';

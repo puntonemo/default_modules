@@ -1,5 +1,6 @@
-import { core, ClientRequest, GenericObject, responseError } from '../..';
-import { User, tools, _deviceId, _login, _passportError, _profile } from "../..";
+import { ClientRequest, GenericObject, responseError, events } from 'core';
+import { tools, _deviceId, _login, _passportError, _profile } from "../..";
+import User from 'model/User';
 
 const registerUser = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName, password} = request.params;
@@ -26,9 +27,9 @@ const registerUser = (request:ClientRequest):Promise<GenericObject> => new Promi
                 tools.hashPassword(password, tools.HASH_SALT)
             );
             //fileDB.setValue('users', username, newUser);
-            core.events.emit('webauth:new-user', request.session.id, username);
+            events.emit('webauth:new-user', request.session.id, username);
             request.session.setValue(_profile, user.toPublicObject());
-            core.events.emit('webauth:auth', request.session.id, user);
+            events.emit('webauth:auth', request.session.id, user);
             resolve({ status: 'ok', user:user.toPublicObject()});
         }
     })
