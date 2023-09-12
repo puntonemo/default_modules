@@ -1,5 +1,5 @@
 import { GenericObject, fetch } from 'core';
-import { encrypt, decrypt } from "../../tools";
+import { encrypt, decrypt } from "modules/passport/tools";
 
 type StandarizedUserProfile = {
     id:string,

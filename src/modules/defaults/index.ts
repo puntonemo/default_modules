@@ -1,14 +1,12 @@
-import  { Service, ClientRequest, GenericObject, Response, responseError, events, PolicyChecker } from 'core';
-
+import { Service, ClientRequest, GenericObject, Response, events } from 'core';
+import { renderManager, renderer } from './render';
 import path from 'path';
 
 import myService from './services/myService';
 import secondService from './services/secondService';
 import shutdownService from './services/shutdownService';
-import {renderManager, renderer} from './render';
 
-export const version = "1.9.4";
-
+export const version = "1.9.4"
 export const init = () => {
     /* WEBAUTH COMPATIBILITY 1.9 */
     events.on('webauth:login', (sessionId:string, userString:string)=>{
@@ -37,7 +35,7 @@ const myStaticsManager = (request:ClientRequest):Promise<GenericObject> => new P
     }
 })
 const requestManager = (request:ClientRequest) => {
-    console.log('Service Request Manager'); 
+    //console.log('Service Request Manager'); 
     return request;
 }
 const defaultResponseManager = (response:GenericObject, _request?:ClientRequest, res?:Response) => {
@@ -60,14 +58,7 @@ const emptyResponseManager = (response:GenericObject, _request?:ClientRequest, r
 
     return undefined;
 }
-const policy:PolicyChecker = async (request:ClientRequest) => {
-    const profile = await request.session.getValue('profile') as GenericObject;
-    const username:string = profile?.username;
-    if(username && username.endsWith('@domain.com'))
-        return true;
-    else
-        throw responseError(401);
-}
+
 
 export const Services:Service[] = [
     {
@@ -88,6 +79,7 @@ export const Services:Service[] = [
         get : '/api/1/myService',
         manager : myService,
         serviceType:'json',
+        serviceState:'stateful',
         requestManager:requestManager,
         responseManager:defaultResponseManager
     },
@@ -96,8 +88,7 @@ export const Services:Service[] = [
         get : '/api/1/secondService',
         manager:secondService,
         serviceType:'json',
-        requestManager,
-        policy
+        requestManager:requestManager,
     },
     {
         name : 'shutdown',

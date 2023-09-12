@@ -1,4 +1,4 @@
-import { decrypt } from "../../tools";
+import { decrypt } from "modules/passport/tools";
 
 export const decodeState = (state:string) => {
     const decodedState = decrypt(state);

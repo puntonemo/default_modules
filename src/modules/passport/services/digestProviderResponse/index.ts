@@ -1,6 +1,7 @@
 import { ClientRequest, GenericObject, responseError, Session, events } from 'core';
 import * as logic from './logic';
-import { _deviceId } from "../..";
+import { _deviceId } from "modules/passport";
+
 
 const digestProviderResponse = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     logic.digestProviderResponse(request.params).then(async providerResponse=>{

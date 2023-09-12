@@ -1,8 +1,7 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
 import User from 'model/User';
-import * as tools from '../../tools';
-
-import { _deviceId, _login, _passportError, _profile } from "../..";
+import * as tools from 'modules/webauth/tools';
+import { _profile } from 'modules/webauth';
 
 const loginUser = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, password} = request.params;

@@ -1,5 +1,7 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
-import { User, tools, _webauthFlowData } from "../..";
+import User from 'model/User';
+import * as tools from 'modules/webauth/tools';
+import { _webauthFlowData } from "modules/webauth";
 
 const getChallenge = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName} = request.params;

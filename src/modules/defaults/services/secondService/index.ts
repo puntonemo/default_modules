@@ -11,9 +11,7 @@ const secondService = (request:ClientRequest):Promise<GenericObject> => new Prom
         if(!isError){
             request.params.foo = 'localBar';
             request.invokeService('remoteFunc.remoteService').then(async remoteResponse=>{
-                setTimeout(async ()=>{
-                    resolve({...remoteResponse as GenericObject, ...{secondService:await request.session.getValue('secondService')}});
-                }, 1000)
+                resolve({...remoteResponse as GenericObject, ...{secondService:await request.session.getValue('secondService')}});
             }).catch(error=>{
                 reject(responseError(500,'custom internal error', error));
             })

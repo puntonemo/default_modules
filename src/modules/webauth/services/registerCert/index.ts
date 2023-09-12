@@ -1,6 +1,6 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
 import User from 'model/User';
-import { _deviceId, _login, _passportError, _profile } from "../..";
+import { _deviceId, _login, _passportError, _profile } from "modules/webauth";
 
 const registerCert = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName} = request.params;
@@ -47,7 +47,7 @@ const registerCert = (request:ClientRequest):Promise<GenericObject> => new Promi
         }
         //fileDB.setValue('users', username, user);     
         request.session.setValue(_profile, user.toPublicObject());
-        events.emit('webauth:auth', request.session.id, user);
+        events.emit('webauth:auth', request.session.id, user.toPublicObject());
         resolve({ status: 'ok', user: user.toPublicObject()})
     })
 });

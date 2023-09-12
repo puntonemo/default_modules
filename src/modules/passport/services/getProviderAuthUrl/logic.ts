@@ -1,4 +1,4 @@
-import { encrypt } from "../../tools"
+import { encrypt } from "modules/passport/tools";
 
 type State = {
     data?:string,

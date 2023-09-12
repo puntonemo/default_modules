@@ -7,8 +7,8 @@ import decodeState from './services/decodeState';
 export const _deviceId = 'deviceId'
 
 export const version = "1.9.4";
-
 export const init = () => {
+    
 }
 
 export const Services:Service[] = [

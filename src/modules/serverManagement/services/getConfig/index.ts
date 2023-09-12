@@ -1,9 +1,9 @@
-import { ClientRequest, GenericObject, responseError, config, gatewayConfig, ServerConnection, ServerVersion, ServerBuildNumber } from 'core';
+import { ClientRequest, GenericObject, responseError, ServerVersion, config, gatewayConfig, ServerConnection, ServerBuildNumber } from 'core';
 
 const getConfig = (request:ClientRequest):Promise<GenericObject> => new Promise(async (resolve, reject)=>{
     //... your code goes here
     if(request){
-        const sconfig = {...config};
+        const cconfig = {...config};
         const gateway = {...gatewayConfig};
         const remoteServers = [];
         const gatewayServers = [];
@@ -27,15 +27,15 @@ const getConfig = (request:ClientRequest):Promise<GenericObject> => new Promise(
         }
         
         // REMOVE CRITICAL PRIVATE INFO
-        delete sconfig.GATEWAY_AUTO_ATTACH_PASSKEY;
-        delete sconfig.HTTPS_PASSPHRASE;
+        delete cconfig.GATEWAY_AUTO_ATTACH_PASSKEY;
+        delete cconfig.HTTPS_PASSPHRASE;
         delete gateway?.AUTO_ATTACH_PASSKEY;
         if(gateway && gateway.PASSKEY) gateway.PASSKEY = undefined;
         //
         const response = {
             version : ServerVersion,
             build : ServerBuildNumber,
-            config,
+            cconfig,
             gateway,
             remoteServers,
             gatewayServers

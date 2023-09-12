@@ -1,6 +1,6 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
-import { _profile } from '../..';
-import User from 'model/User'
+import User from 'model/User';
+import { _deviceId, _login, _passportError, _profile } from "modules/webauth";
 
 const loginCert = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
 
@@ -15,7 +15,7 @@ const loginCert = (request:ClientRequest):Promise<GenericObject> => new Promise(
             reject(responseError(404,`user not found`));
         }else{
             request.session.setValue(_profile, user.toPublicObject());
-            events.emit('webauth:auth', request.session.id, user);
+            events.emit('webauth:auth', request.session.id, user.toPublicObject());
             resolve({ status: 'ok',user:user.toPublicObject()});
         }
     });

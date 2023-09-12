@@ -1,5 +1,6 @@
-import { ClientRequest, GenericObject, responseError } from 'core';
-import { User, _profile } from "../..";
+import { ClientRequest, GenericObject, responseError } from 'core'
+import User from 'model/User';
+import { _profile } from "modules/webauth";
 
 const getUserProfile = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     request.session.getValue(_profile).then(profileSessionValue=>{

@@ -4,6 +4,7 @@
     "paths": {
       "@core" : ["./core"],
       "@model/*" : ["./model/*"],
+      "@adapters/*" : ["./adapters/*"],
       "@modules/*" : ["./modules/*"],
       "@tools/*" : ["./tools/*"]
     },

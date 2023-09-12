@@ -1,5 +1,4 @@
 import { ClientRequest, GenericObject } from 'core';
-
 import { _deviceId, _login, _passportError, _profile } from "../..";
 
 const getCertificateInfo = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{

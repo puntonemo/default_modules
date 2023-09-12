@@ -1,8 +1,7 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
-import { _profile, _webauthFlowData } from "../..";
 import User from 'model/User';
+import { _profile, _webauthFlowData } from "modules/webauth";
 import * as base64url from 'base64url';
-
 
 const validateClientData = (credential:GenericObject, webauthFlowData:GenericObject, remoteAddress:string|string[]|undefined) => {
     let validated = true;
@@ -119,7 +118,7 @@ const setCredential = (request:ClientRequest):Promise<GenericObject> => new Prom
                                 if(credentialFound){
                                     //request.session.profile = user.toPublicObject();
                                     request.session.setValue(_profile, user.toPublicObject())
-                                    events.emit('webauth:auth', request.session.id, user);
+                                    events.emit('webauth:auth', request.session.id, user.toPublicObject());
                                     resolve(user.toPublicObject())
                                 }else{
                                     reject(responseError(403, 'Invalid ClientialId'));

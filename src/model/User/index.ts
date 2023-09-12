@@ -1,7 +1,7 @@
-import { IUserAdapterStatic, IUserAdapter } from "./Adapters/UserAdapter"
-import { UserAdapter, UserAdapterStatic } from "./Adapters/FileAdapter";
+import { IUser, IUserAdapter, IUserInstanceAdapter } from "./Adapter";
+export { IUser, IUserAdapter, IUserInstanceAdapter }
 
-export default class User {
+export default class User implements IUser {
     public id:number;
     public username:string;
     public firstName:string;
@@ -14,11 +14,16 @@ export default class User {
     private _credentials:string[];
     private _authenticators:string[];
     private _certificates:string[];
-    private Adapter:IUserAdapter;
-    private static Adapter:IUserAdapterStatic = UserAdapterStatic;
+    // ADAPTERS
+    private static Adapter:IUserAdapter;
+    private Adapter:IUserInstanceAdapter;
+    // CONSTRUCTOR
     constructor(id:number, username:string, firstName:string, lastName:string, password?:string, picture?:string, provider?:string, providerId?:string, authenticators?:string[], credentials?:string[], certificates?:string[]){
-        this.Adapter = new UserAdapter(this);
-        this.id = id ?? 0;
+        // Adopt the instance adapter
+        this.Adapter = User.Adapter.getAdapter(this);
+
+        // Initialize member values
+        this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,38 +40,57 @@ export default class User {
             this.Adapter.newUser();
         }
     }
+    // Adopt the static adapter
+    static setAdapter(userAdapter:IUserAdapter){
+        User.Adapter = userAdapter;
+    }
 
-    toObject () {
-        return {
-            id: this.id,
-            username: this.username,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            password: this.password,
-            credentials: this._credentials,
-            authenticators: this._authenticators,
-            certificates: this._certificates,
-            picture: this.picture,
-            googleId: this.googleId,
-            liveId: this.liveId,
-            twitterId: this.twitterId
+    // Static model implementation
+    static get(username:string){
+        return User.Adapter.get(username);
+    }
+    static async usernameByCertificate(certificate:string):Promise<string> {
+        const username = await this.Adapter.usernameByCertificate(certificate);
+        return username
+    }
+    static async getByCertificate(certificate:string):Promise<IUser|undefined>{
+        const username = await this.usernameByCertificate(certificate);
+        if(username){
+            return await this.get(username);
+        }else{
+            return undefined;
         }
     }
-    toJSON():string{
-        return JSON.stringify(this.toObject())
+    static async usernameByCredential(credential:string):Promise<string> {
+        const username = await this.Adapter.usernameByCredential(credential);
+        return username
     }
-    toPublicObject () {
-        return {
-            id: this.id,
-            username: this.username,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            displayName: this.displayName,
-            initials: this.initials,
-            picture: this.picture,
-            googleId: this.googleId
-        }
+    // Instance model implementation
+    private set authenticators (value:string[]) {
+        this._authenticators = value;
     }
+    private set credentials (value:string[]) {
+        this._credentials = value;
+    }
+    private set certificates (value:string[]) {
+        this._certificates = value;
+    }
+    get authenticators (){
+        return this._authenticators;
+    }
+    get credentials (){
+        return this._credentials;
+    }
+    get certificates (){
+        return this._certificates;
+    }
+    get displayName(){
+        return `${this.firstName} ${this.lastName}`;
+    }
+    get initials() {
+        return `${this.firstName.substring(0,1).toUpperCase()}${this.lastName.substring(0,1).toUpperCase()}`;
+    }
+
     findCredential (credentialId:string) {
         return this._credentials.find((val:string)=>val == credentialId);
     }
@@ -106,6 +130,7 @@ export default class User {
                 throw `${provider} provider not supported`;
         }
         this.Adapter.setProviderId(provider, id);
+        return this;
     }
     getProviderId (provider:string) {
         switch(provider.toUpperCase()){
@@ -119,65 +144,35 @@ export default class User {
                 throw `${provider} provider not supported`;
         }
     }
-    private set authenticators (value:string[]) {
-        this._authenticators = value;
-    }
-    private set credentials (value:string[]) {
-        this._credentials = value;
-    }
-    private set certificates (value:string[]) {
-        this._certificates = value;
-    }
-    get authenticators (){
-        return this._authenticators;
-    }
-    get credentials (){
-        return this._credentials;
-    }
-    get certificates (){
-        return this._certificates;
-    }
-    get displayName(){
-        return `${this.firstName} ${this.lastName}`;
-    }
-    get initials() {
-        return `${this.firstName.substring(0,1).toUpperCase()}${this.lastName.substring(0,1).toUpperCase()}`;
-    }
-    static async get(username:string):Promise<User|undefined>{
-        return await User.Adapter.get(username);
-    }
-    static async usernameByCertificate(certificate:string):Promise<string> {
-        const username = await this.Adapter.usernameByCertificate(certificate);
-        return username
-    }
-    static async getByCertificate(certificate:string):Promise<User|undefined>{
-        const username = await this.usernameByCertificate(certificate);
-        if(username){
-            return await this.get(username);
-        }else{
-            return undefined;
+    toObject () {
+        return {
+            id: this.id,
+            username: this.username,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            password: this.password,
+            credentials: this._credentials,
+            authenticators: this._authenticators,
+            certificates: this._certificates,
+            picture: this.picture,
+            googleId: this.googleId,
+            liveId: this.liveId,
+            twitterId: this.twitterId
         }
     }
-    /**
-     * Returns the username corresponding to a Credential ID
-     * @param credential Credential ID
-     * @returns username
-     */
-    static async usernameByCredential(credential:string):Promise<string> {
-        const username = await this.Adapter.usernameByCredential(credential);
-        return username
+    stringify():string{
+        return JSON.stringify(this.toObject())
     }
-    /**
-     * Returns a user corresponding to a Credential ID
-     * @param credential 
-     * @returns User
-     */
-    static async getByCredential(credential:string):Promise<User|undefined> {
-        const username = await this.usernameByCredential(credential);
-        if(username){
-            return await this.Adapter.get(username);
-        }else{
-            return undefined;
+    toPublicObject () {
+        return {
+            id: this.id,
+            username: this.username,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            displayName: this.displayName,
+            initials: this.initials,
+            picture: this.picture,
+            googleId: this.googleId
         }
     }
 }

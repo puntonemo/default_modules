@@ -1,10 +1,11 @@
 import  { Service } from 'core';
 
+
 import getConfig from './services/getConfig';
 
-export const version = "1.9.1";
-
+export const version = '1.9.1'
 export const init = () => {
+
 }
 
 export const Services:Service[] = [

@@ -1,4 +1,4 @@
-import { ClientRequest, GenericObject, responseError } from 'core';
+import { ClientRequest, GenericObject, responseError, events } from 'core';
 
 const myService = (request:ClientRequest):Promise<GenericObject> => new Promise(async (resolve, reject)=>{
     const {isError, redirect} = request.params;
@@ -20,10 +20,12 @@ const myService = (request:ClientRequest):Promise<GenericObject> => new Promise(
             //}).catch(error=>{
             //    reject(error);
             //})
+            const requestObject = await request.toGenericObject()
             let response:GenericObject = {
-                request : await request.toGenericObject(),
+                request : requestObject,
                 version : 'local_only'
             };
+            events.emit('myEvent', requestObject);
             resolve(response);
         }else{
             reject(responseError(500,'internal cusom error'));
