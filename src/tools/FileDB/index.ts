@@ -12,6 +12,14 @@ export default class FileDB {
     collection(collectionName:string) {
         return this.db[collectionName]
     }
+    getAll(collectionName:string) {
+        const data = this.db[collectionName] || {};
+        let resultsArray = []
+        for(const item in data){
+            resultsArray.push(data[item]);
+        }
+        return resultsArray;
+    }
     getValue(collectionName:string, key:string) {
         if(!this.db[collectionName]) return undefined;
         return this.db[collectionName][key];
@@ -19,6 +27,11 @@ export default class FileDB {
     setValue(collectionName:string, key:string, value:GenericObject|string){
         if(!this.db[collectionName]) this.db[collectionName] = {};
         this.db[collectionName][key] = value;
+        this.writeChanges();
+    }
+    delete(collectionName:string, key:string){
+        if(!this.db[collectionName]) this.db[collectionName] = {};
+        delete this.db[collectionName][key];
         this.writeChanges();
     }
     private writeChanges() {

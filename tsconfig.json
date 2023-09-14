@@ -3,8 +3,9 @@
     "baseUrl": "./src",
     "paths": {
       "@core" : ["./core"],
+      "@core_adapters/*" : ["./core_adapters/*"],
       "@model/*" : ["./model/*"],
-      "@adapters/*" : ["./adapters/*"],
+      "@model_adapters/*" : ["./model_adapters/*"],
       "@modules/*" : ["./modules/*"],
       "@tools/*" : ["./tools/*"]
     },

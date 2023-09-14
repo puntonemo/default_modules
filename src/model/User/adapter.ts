@@ -1,3 +1,4 @@
+import { GenericObject } from "@core";
 import { IModel } from "model";
 
 export interface IUser extends IModel {
@@ -15,6 +16,19 @@ export interface IUser extends IModel {
     certificates:string[];
     displayName:string;
     initials:string;
+    email_confirmed_at?:number;
+    phone?:string;
+    phone_confirmed_at?:number;
+    last_sign_in_at?:number;
+    active:boolean;
+    active_changed_at?:number;
+    created_at?:number;
+    updated_at?:number;
+    update:()=>void;
+    remove:()=>void;
+    setAttributes: (requestParams:GenericObject) => number;
+    setPassword: (value : string) => void;
+    passwordMatch: (password:string) => boolean;
     findCredential: (credentialId:string) => string | undefined;
     findCertificate: (certificateId:string) => string | undefined;
     findAuthenticator: (authenticatorId:string) => string | undefined;
@@ -28,14 +42,19 @@ export interface IUser extends IModel {
 export interface IUserAdapter {
     getAdapter(user:IUser): IUserInstanceAdapter
     get(username:string): Promise<IUser | undefined>
+    getById(id:number): Promise<IUser | undefined>
+    getAll(): Promise<IUser[]>
+    remove(username:string): Promise<void>
     usernameByCertificate(certificate:string):Promise<string>
     usernameByCredential(credential:string): Promise<string>
 }
 
 export abstract class IUserInstanceAdapter {
-    constructor(protected user:IUser){
+    constructor(protected instance:IUser){
     }
-    abstract newUser():void;
+    abstract create():number;
+    abstract update():void;
+    abstract remove():void;
     abstract addCredential(credential:string):void;
     abstract addCertificate (certificate:string):void;
     abstract addAuthenticator (authenticator:string):void;

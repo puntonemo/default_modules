@@ -13,12 +13,3 @@ export const randomBase64URLBuffer = (len:number) => {
 
     return base64url(buff);
 }
-export const HASH_SALT = 'hashSalt';
-const HASH_ALGORITHM = `sha512`;
-const HASH_LENGTH = 64;
-const HASH_ITERATIONS = 1000;
-
-export const hashPassword = (password: string, passwordSalt: string): string => {
-    const passwordHash: string = crypto.pbkdf2Sync(password, passwordSalt, HASH_ITERATIONS, HASH_LENGTH, HASH_ALGORITHM).toString(`hex`);
-    return passwordHash;
-}

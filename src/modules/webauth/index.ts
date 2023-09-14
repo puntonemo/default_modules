@@ -23,7 +23,7 @@ export const _deviceId = `deviceId`
 export const _passportError = `passportError`;
 export const _webauthFlowData = `webauthFlowData`;
 
-export const version = `1.9.5`;
+export const version = `1.9.6`;
 export const init = () => {
     /**
      * COMPATIBILITY WITH PASSPORT

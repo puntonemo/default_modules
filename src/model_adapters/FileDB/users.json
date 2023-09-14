@@ -1,0 +1,43 @@
+{
+    "users": {
+        "correo@davidpascual.com": {
+            "id": 1694698347333,
+            "username": "correo@davidpascual.com",
+            "firstName": "David",
+            "lastName": "Pascual",
+            "password": "c8192fa5b34d440549c42d8e8006bb35aa0c051cd3d1e709d5c9944a825398aac49ff7d7c5940e59060d42b5514b434c0444b7a86d9258093225f489a03fc731",
+            "credentials": [],
+            "authenticators": [],
+            "certificates": [],
+            "active": true,
+            "created_at": 1694698347333,
+            "updated_at": 1694698347342
+        },
+        "dpascual@yotramito.es": {
+            "id": 1694698433166,
+            "username": "dpascual@yotramito.es",
+            "firstName": "David",
+            "lastName": "YT",
+            "password": "9a44699d4952a41cbf79ea22a8c84e5b277875886d97112aef05790fd8c74f616590434716246748dc0a170cfbf377a817895eb97ef72afdeae4ada8d66f4f6e",
+            "credentials": [],
+            "authenticators": [],
+            "certificates": [],
+            "active": true,
+            "created_at": 1694698433166,
+            "updated_at": 1694698433169
+        },
+        "tecnologia@yotramito.es": {
+            "id": 1694698542090,
+            "username": "tecnologia@yotramito.es",
+            "firstName": "Tecnologia",
+            "lastName": "YT",
+            "password": "05cecfd9962cae582b38a88a8e15cd851c8d3e7eb27b363b5f78563d48e7aaed391a6f7f8512f9c59640da28cfbb39a91a428c92dec5c8c0be88c2769f3c5fd5",
+            "credentials": [],
+            "authenticators": [],
+            "certificates": [],
+            "active": true,
+            "created_at": 1694698542090,
+            "updated_at": 1694698542095
+        }
+    }
+}

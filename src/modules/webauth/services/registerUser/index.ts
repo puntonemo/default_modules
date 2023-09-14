@@ -1,7 +1,6 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
 import { _deviceId, _login, _passportError, _profile } from "modules/webauth";
 import User from 'model/User';
-import * as tools from 'modules/webauth/tools';
 
 const registerUser = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
     const {username, firstName, lastName, password} = request.params;
@@ -24,14 +23,15 @@ const registerUser = (request:ClientRequest):Promise<GenericObject> => new Promi
                 0,
                 username,
                 firstName,
-                lastName,
-                tools.hashPassword(password, tools.HASH_SALT)
+                lastName
             );
+            user.setPassword(password);
             //fileDB.setValue('users', username, newUser);
-            events.emit('webauth:new-user', request.session.id, username);
-            request.session.setValue(_profile, user.toPublicObject());
-            events.emit('webauth:auth', request.session.id, user.toPublicObject());
-            resolve({ status: 'ok', user:user.toPublicObject()});
+            const profile = user.toPublicObject();
+            const fullUser = user.toObject();
+            request.session.setValue(_profile, profile);
+            events.emit('webauth:new-user', request.session.id, fullUser);
+            resolve({ status: 'ok', user:profile});
         }
     })
 });

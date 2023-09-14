@@ -1,6 +1,5 @@
 import { ClientRequest, GenericObject, responseError, events } from 'core';
 import User from 'model/User';
-import * as tools from 'modules/webauth/tools';
 import { _profile } from 'modules/webauth';
 
 const loginUser = (request:ClientRequest):Promise<GenericObject> => new Promise((resolve, reject)=>{
@@ -11,22 +10,26 @@ const loginUser = (request:ClientRequest):Promise<GenericObject> => new Promise(
     User.get(username).then(user=>{
         if(!user){
             reject(responseError(403, `login failed`));
-        }else{
-            if(!user.password){
-                reject(responseError(403, `login failed`));
-            }else{
-                if(!(tools.hashPassword(password, tools.HASH_SALT) === user.password)){
-                    reject(responseError(403, `login failed`));
-                }else{
-                    request.session.setValue(_profile, user.toPublicObject());
-                    events.emit('webauth:auth', request.session.id, user.toPublicObject());
-                    resolve ({ 
-                        status: 'ok',
-                        user: user.toPublicObject()
-                    });
-                }
-            }
+            return;
         }
+        if(!user.password){
+            reject(responseError(403, `login failed`));
+            return;
+        }
+        if(!user.passwordMatch(password)){
+            reject(responseError(403, `login failed`));
+            return;
+        }
+        
+        const profile = user.toPublicObject();
+        const fullUser = user.toObject();
+        request.session.setValue(_profile, profile);
+        events.emit('webauth:auth', request.session.id, fullUser);
+        resolve ({ 
+            status: 'ok',
+            user: profile
+        });
+    
     })
 });
 
